@@ -4,7 +4,7 @@ import com.csj.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-@Mapper
+
 public interface UserMapper {
 
     /**
@@ -12,4 +12,10 @@ public interface UserMapper {
      * @return
      */
     List<User> findAll();
+
+    /**
+     * 添加用户
+     */
+    void insert(User user);
+
 }

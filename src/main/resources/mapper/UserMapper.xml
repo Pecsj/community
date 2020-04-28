@@ -10,4 +10,8 @@
         select * from user
     </select>
 
+    <insert id="insert" parameterType="com.csj.domain.User">
+        insert into user(name,password,age,email) values (#{name},#{password},#{age},#{email})
+    </insert>
+
 </mapper>

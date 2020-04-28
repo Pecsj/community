@@ -23,7 +23,9 @@ public class OkHttp {
                 .post(body)
                 .build();
         //如果try出现异常，（）里连接会自动释放
-        try (Response response = client.newCall(request).execute()) {
+        Response response = null;
+        try{
+            response = client.newCall(request).execute();
             String result = response.body().string();
             //打印结果
             //System.out.println(result);
@@ -34,6 +36,8 @@ public class OkHttp {
         }catch (IOException e){
             e.printStackTrace();
             return null;
+        }finally {
+            response.close();
         }
     }
 
@@ -46,14 +50,19 @@ public class OkHttp {
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token="+accessToken)
                 .build();
-        try (Response response = client.newCall(request).execute()) {
+        Response response = null;
+        try{
+            response = client.newCall(request).execute();
             String result = response.body().string();
-            System.out.println(result);
+            //System.out.println(result);
             GithubUser githubUser = JSON.parseObject(result, GithubUser.class);
+            githubUser.setToken();//使用uuid随机设置唯一token值，先写着
             return githubUser;
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }finally {
+            response.close();
         }
     }
 

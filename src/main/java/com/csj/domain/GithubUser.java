@@ -1,12 +1,14 @@
 package com.csj.domain;
 
+import java.util.UUID;
+
 /**
  * 封装由github返回的user对象
  */
 public class GithubUser {
     private String id;
     private String login;
-    private String html_url;
+    private String token;
 
     public String getId() {
         return id;
@@ -24,11 +26,11 @@ public class GithubUser {
         this.login = login;
     }
 
-    public String getHtml_url() {
-        return html_url;
+    public void setToken() {
+        this.token = UUID.randomUUID().toString();
     }
 
-    public void setHtml_url(String html_url) {
-        this.html_url = html_url;
+    public String getToken() {
+        return token;
     }
 }

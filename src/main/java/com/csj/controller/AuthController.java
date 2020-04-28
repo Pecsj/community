@@ -2,6 +2,9 @@ package com.csj.controller;
 
 import com.csj.domain.AccessToken;
 import com.csj.domain.GithubUser;
+import com.csj.domain.User;
+import com.csj.service.IUserService;
+import com.csj.service.impl.UserService;
 import com.csj.util.OkHttp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AuthController {
     @Autowired
     OkHttp okHttp = new OkHttp();
+    @Autowired
+    IUserService userService = new UserService();
 
     @Value("${github.client.id}")
     private String clientId;
@@ -37,12 +42,15 @@ public class AuthController {
         //获取token码
         String token = okHttp.getAccessToken(accessToken);
         //根据token 获取用户信息
-        Thread.sleep(2000);//有时会出现服务器过早关闭链接导致空指针异常(github延迟高)
+        Thread.sleep(1000);//有时会出现服务器过早关闭链接导致空指针异常(github延迟高)出现commitreset,和网络有关
         GithubUser user = okHttp.getUser(token);
         System.out.println(user.getId());
         System.out.println(user.getLogin());
-        System.out.println(user.getHtml_url());
-        return "success";
+        System.out.println(user.getToken());
+
+        //将GitHubuser保存到数据库
+        userService.insertGithubUser(user);
+        return "index";
     }
 
 }
