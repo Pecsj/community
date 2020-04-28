@@ -1,0 +1,27 @@
+#服务器端口号和虚拟地址
+server:
+  port: 80
+  servlet:
+    context-path: /csj
+
+#mybatis映射文件
+mybatis:
+  type-aliases-package: com.csj.domain
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+#数据源配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/community?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+#github第三方授权配置
+github:
+  client:
+    id: 5963292120217c7f7844
+    secret: 3f9012c1ed4edede7e97cf7b683e2f926953b175
+  redirect:
+    url: http://localhost/csj/callback
+

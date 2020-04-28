@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置持久层接口的映射文件 -->
+<mapper namespace="com.csj.mapper.UserMapper">
+    <!--配置方法-->
+    <select id="findAll" resultType="com.csj.domain.User">
+        select * from user
+    </select>
+
+</mapper>
