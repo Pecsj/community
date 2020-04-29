@@ -8,6 +8,7 @@ public class User implements Serializable {
     private String password;
     private Integer age;
     private String email;
+    private String token;
 
     public String getName() {
         return name;
@@ -49,6 +50,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -57,6 +66,7 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

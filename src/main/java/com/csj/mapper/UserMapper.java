@@ -18,4 +18,18 @@ public interface UserMapper {
      */
     void insert(User user);
 
+    /**
+     * 根据token查询用户
+     * @param token
+     * @return
+     */
+    User findByToken(String token);
+
+    /**
+     * 根据用户名查找用户
+     * @param name
+     * @return
+     */
+    User findByName(String name);
+
 }

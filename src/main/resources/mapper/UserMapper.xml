@@ -11,7 +11,15 @@
     </select>
 
     <insert id="insert" parameterType="com.csj.domain.User">
-        insert into user(name,password,age,email) values (#{name},#{password},#{age},#{email})
+        insert into user(name,password,age,email,token) values (#{name},#{password},#{age},#{email},#{token})
     </insert>
+
+    <select id="findByToken" parameterType="String" resultType="com.csj.domain.User">
+        select * from user where token = #{token}
+    </select>
+
+    <select id="findByName" parameterType="String" resultType="com.csj.domain.User">
+        select * from user where name = #{name}
+    </select>
 
 </mapper>

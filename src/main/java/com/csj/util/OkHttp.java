@@ -56,7 +56,7 @@ public class OkHttp {
             String result = response.body().string();
             //System.out.println(result);
             GithubUser githubUser = JSON.parseObject(result, GithubUser.class);
-            githubUser.setToken();//使用uuid随机设置唯一token值，先写着
+            githubUser.setToken();
             return githubUser;
         }catch (Exception e){
             e.printStackTrace();
