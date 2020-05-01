@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置持久层接口的映射文件 -->
+<mapper namespace="com.csj.mapper.ArticleMapper">
+    <select id="findAll" resultType="com.csj.domain.Article">
+        select * from article
+    </select>
+
+    <insert id="insertArticle" parameterType="com.csj.domain.Article">
+        insert into article(title,description,gmt_creat,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreat},#{gmtModified},#{creator},#{tag})
+    </insert>
+
+</mapper>

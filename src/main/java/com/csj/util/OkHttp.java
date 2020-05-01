@@ -16,7 +16,7 @@ public class OkHttp {
     public static String getAccessToken(AccessToken accessToken){
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
-
+        Call call=null;
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessToken));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
@@ -25,7 +25,8 @@ public class OkHttp {
         //如果try出现异常，（）里连接会自动释放
         Response response = null;
         try{
-            response = client.newCall(request).execute();
+            call = client.newCall(request);
+            response = call.execute();
             String result = response.body().string();
             //打印结果
             //System.out.println(result);
@@ -37,6 +38,7 @@ public class OkHttp {
             e.printStackTrace();
             return null;
         }finally {
+            call.cancel();
             response.close();
         }
     }
@@ -47,21 +49,23 @@ public class OkHttp {
      */
     public static GithubUser getUser(String accessToken){
         OkHttpClient client = new OkHttpClient();
+        Call call=null;
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token="+accessToken)
                 .build();
         Response response = null;
         try{
-            response = client.newCall(request).execute();
+            call = client.newCall(request);
+            response = call.execute();
             String result = response.body().string();
             //System.out.println(result);
             GithubUser githubUser = JSON.parseObject(result, GithubUser.class);
-            githubUser.setToken();
             return githubUser;
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }finally {
+            call.cancel();
             response.close();
         }
     }

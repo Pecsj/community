@@ -10,4 +10,5 @@ public interface IUserService {
     void insertGithubUser(GithubUser guser);
     User findByToken(String token);
     boolean isExistByName(String name);
+    User findByName(String name);
 }

@@ -55,4 +55,15 @@ public class UserService implements IUserService {
         return false;
     }
 
+    /**
+     * 根据用户名查找用户
+     * @param name
+     * @return
+     */
+    @Override
+    public User findByName(String name) {
+        User user = userMapper.findByName(name);
+        return user;
+    }
+
 }

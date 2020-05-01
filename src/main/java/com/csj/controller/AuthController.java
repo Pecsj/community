@@ -53,20 +53,25 @@ public class AuthController {
         //根据token 获取用户信息
         Thread.sleep(1000);//有时会出现服务器过早关闭链接导致空指针异常(github延迟高)出现commitreset,和网络有关
         GithubUser guser = okHttp.getUser(token);
-        User user = Convert.gitToUser(guser);
+
+        //查看数据库中是否存在
+        if(!userService.isExistByName(guser.getLogin())){
+            //数据库不存在，存入数据库，设置用户随机token码用于cookie持久化登录
+            guser.setToken();
+            userService.insertGithubUser(guser);
+        }
 
         //保存到session中持久化登录，将token保存到cookie中用作登录验证
-        modelMap.addAttribute("user",user);
+        User user = Convert.gitToUser(guser);
+        modelMap.addAttribute("user",user);//使用modelMap和Attributes注解存入session
+        System.out.println("用户存入session");
+        //数据库中存在，取出授权码
+        user = userService.findByName(user.getName());
         Cookie cookie = new Cookie("token", user.getToken());
         //测试使用值5分钟失效
         cookie.setMaxAge(60*5);
         response.addCookie(cookie);
 
-        //查看数据库中是否存在
-        if(!userService.isExistByName(guser.getLogin())){
-            System.out.println("数据库中不存在，存入数据库");
-            userService.insertGithubUser(guser);
-        }
         return "index";
     }
 }

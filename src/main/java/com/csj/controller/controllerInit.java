@@ -10,6 +10,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -26,8 +28,20 @@ public class controllerInit {
         return "success";
     }
 
-    @RequestMapping("/index")
-    public String testGithub(){
+    @RequestMapping("/")
+    public String testGithub(HttpServletRequest request){
+        //去cookie中查找用户是否持久化登录
+        Cookie[] cookies = request.getCookies();
+        if(cookies!=null){
+            for (Cookie cookie : cookies) {
+                if("token".equals(cookie.getName())){
+                    //根据cookie中的token授权码获取用户
+                    User user = new User();
+                    user = service.findByToken(cookie.getValue());
+                    request.getSession().setAttribute("user",user);
+                }
+            }
+        }
         return "index";
     }
 
