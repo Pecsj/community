@@ -6,7 +6,6 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
-		<script src="js/npm.js" type="application/javascript"></script>
 		<script src="js/bootstrap.min.js" type="application/javascript"></script>
 
 	</head>
@@ -32,10 +31,10 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li th:if="${session.user != null}">
-							<a th:href="${#httpServletRequest.getContextPath()+'/publish'}">发帖</a>
+							<a th:href="${#httpServletRequest.getContextPath()+'/publish'}" style="margin-top: 3px">发帖</a>
 						</li>
 						<li th:if="${session.user == null}">
-							<a href="https://github.com/login/oauth/authorize?client_id=5963292120217c7f7844&state=1&redirect_uri=http://localhost/csj/callback">github登陆</a>
+							<a th:href="@{/github}">github登录</a>
 						</li>
 						<li th:if="${session.user == null}">
 							<a href="#">注册</a>
@@ -44,6 +43,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 								<span th:text="${session.user.getName()}"></span>
 								<span class="caret"></span>
+								<img th:src="${session.user.getAvatarUrl()}" width="25px" height="25px">
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="#">我的发帖</a></li>

@@ -16,6 +16,7 @@ public class Convert {
         user.setName(guser.getLogin());
         user.setPassword(guser.getId());
         user.setToken(guser.getToken());
+        user.setAvatarUrl(guser.getAvatar_url());
         return user;
     }
 

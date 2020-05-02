@@ -25,3 +25,6 @@ github:
   redirect:
     url: http://localhost/csj/callback
 
+#热部署关闭tymleaf缓存
+thymeleaf:
+  cache: false

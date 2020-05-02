@@ -7,6 +7,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class OkHttp {
@@ -15,14 +16,18 @@ public class OkHttp {
      */
     public static String getAccessToken(AccessToken accessToken){
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client;
+        client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
         Call call=null;
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessToken));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
                 .build();
-        //如果try出现异常，（）里连接会自动释放
         Response response = null;
         try{
             call = client.newCall(request);
@@ -39,7 +44,9 @@ public class OkHttp {
             return null;
         }finally {
             call.cancel();
-            response.close();
+            if(response!=null){
+                response.close();
+            }
         }
     }
 
@@ -48,7 +55,11 @@ public class OkHttp {
      * @return
      */
     public static GithubUser getUser(String accessToken){
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client;
+        client = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
         Call call=null;
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token="+accessToken)
@@ -58,6 +69,7 @@ public class OkHttp {
             call = client.newCall(request);
             response = call.execute();
             String result = response.body().string();
+            System.out.println(result);
             //System.out.println(result);
             GithubUser githubUser = JSON.parseObject(result, GithubUser.class);
             return githubUser;
@@ -66,7 +78,9 @@ public class OkHttp {
             return null;
         }finally {
             call.cancel();
-            response.close();
+            if(response!=null){
+                response.close();
+            }
         }
     }
 

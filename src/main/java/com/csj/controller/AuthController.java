@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
+//https://github.com/login/oauth/authorize?client_id=5963292120217c7f7844&state=1&redirect_uri=http://localhost/csj/callback&scope=user
 @Controller
 @SessionAttributes("user")
 public class AuthController {
@@ -32,6 +32,16 @@ public class AuthController {
     @Value("${github.redirect.url}")
     private String redirectUrl;
 
+    @GetMapping("/github")
+    public String github(){
+        StringBuilder url = new StringBuilder("https://github.com/login/oauth/authorize");
+        url.append("?client_id="+clientId);
+        url.append("&redirect_uri="+redirectUrl);
+        url.append("&state="+System.currentTimeMillis());
+        url.append("&scope=user");
+        System.out.println(url);
+        return "redirect:"+url;
+    }
     /**
      * 用code码发送access_token请求获取用户信息
      * @param code

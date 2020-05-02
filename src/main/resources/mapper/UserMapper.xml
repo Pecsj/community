@@ -11,7 +11,7 @@
     </select>
 
     <insert id="insert" parameterType="com.csj.domain.User">
-        insert into user(name,password,age,email,token) values (#{name},#{password},#{age},#{email},#{token})
+        insert into user(name,password,age,email,token,avatar_url) values (#{name},#{password},#{age},#{email},#{token},#{avatarUrl})
     </insert>
 
     <select id="findByToken" parameterType="String" resultType="com.csj.domain.User">

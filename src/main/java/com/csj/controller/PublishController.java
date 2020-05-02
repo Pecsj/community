@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes("message")
+@SessionAttributes("error")
 public class PublishController {
     @Autowired
     private IArticleService service;
@@ -24,7 +24,6 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String dopublish(Article article, HttpServletRequest request){
-        System.out.println(article);
         //判断用户是否登录
         Object user = request.getSession().getAttribute("user");
         if (user==null){

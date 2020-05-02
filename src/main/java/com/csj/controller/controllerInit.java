@@ -45,18 +45,5 @@ public class controllerInit {
         return "index";
     }
 
-    //测试存入一个session
-    @RequestMapping("/add")
-    public String add(ModelMap modelMap){
-        modelMap.addAttribute("value","csj");
-        return "success";
-    }
-
-    @RequestMapping("/show")
-    public String show(@SessionAttribute(value = "value",required = false) String value){
-        System.out.println(value);
-        return "success";
-    }
-
 
 }
