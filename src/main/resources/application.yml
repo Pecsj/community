@@ -28,3 +28,9 @@ github:
 #热部署关闭tymleaf缓存
 thymeleaf:
   cache: false
+
+#page分页配置
+page:
+  pageCount: 5
+
+

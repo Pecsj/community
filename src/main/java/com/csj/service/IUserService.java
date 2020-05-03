@@ -1,6 +1,6 @@
 package com.csj.service;
 
-import com.csj.domain.GithubUser;
+import com.csj.domain.dto.GithubUser;
 import com.csj.domain.User;
 
 import java.util.List;

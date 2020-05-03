@@ -4,5 +4,20 @@ body{
 
 .main{
     background-color: white;
-    margin: 30px;
+    margin: 30px 100px;
+}
+
+.articleDiv{
+    border-bottom: #eeeeee 1px solid;
+}
+
+.listimg{
+    height: 75px;
+    width: 75px;
+    margin-bottom: 15px;
+}
+
+.listtext{
+    line-height: 30px;
+    height: 30px;
 }

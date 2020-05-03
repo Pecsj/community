@@ -1,18 +1,26 @@
-package com.csj.domain;
+package com.csj.domain.dto;
+
+import com.csj.domain.Article;
+import com.csj.domain.User;
 
 import java.io.Serializable;
 
-public class Article implements Serializable {
+/**
+ * 用于封装文章列表信息
+ */
+public class ListArticle implements Serializable {
     private Integer id;
     private String title;
-    private String description;//内容
-    private String tag;//标签
-    private Long gmtCreat;//发表时间
-    private Long gmtModified;//最后修改时间
-    private Integer creator;//作者id
-    private Integer viewCount;//查看数
-    private Integer commentCount;//评论数
-    private Integer likeCount;//喜欢数
+    private String description;
+    private String tag;
+    private Long gmtCreat;
+    private Long gmtModified;
+    private Integer creator;
+    private Integer viewCount;
+    private Integer commentCount;
+    private Integer likeCount;
+
+    private User user;
 
     public Integer getId() {
         return id;
@@ -37,6 +45,7 @@ public class Article implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getTag() {
         return tag;
     }
@@ -44,6 +53,7 @@ public class Article implements Serializable {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
     public Long getGmtCreat() {
         return gmtCreat;
     }
@@ -92,9 +102,17 @@ public class Article implements Serializable {
         this.likeCount = likeCount;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
-        return "Article{" +
+        return "ListArticle{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
@@ -105,6 +123,7 @@ public class Article implements Serializable {
                 ", viewCount=" + viewCount +
                 ", commentCount=" + commentCount +
                 ", likeCount=" + likeCount +
+                ", user=" + user +
                 '}';
     }
 }

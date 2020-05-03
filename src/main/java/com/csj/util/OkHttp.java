@@ -2,7 +2,7 @@ package com.csj.util;
 
 import com.alibaba.fastjson.JSON;
 import com.csj.domain.AccessToken;
-import com.csj.domain.GithubUser;
+import com.csj.domain.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +62,8 @@ public class OkHttp {
                 .build();
         Call call=null;
         Request request = new Request.Builder()
-                .url("https://api.github.com/user?access_token="+accessToken)
+                .url("https://api.github.com/user")
+                .header("Authorization","token "+accessToken)
                 .build();
         Response response = null;
         try{

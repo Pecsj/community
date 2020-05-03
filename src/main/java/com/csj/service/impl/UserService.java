@@ -1,11 +1,10 @@
 package com.csj.service.impl;
 
-import com.csj.domain.GithubUser;
+import com.csj.domain.dto.GithubUser;
 import com.csj.domain.User;
 import com.csj.mapper.UserMapper;
 import com.csj.service.IUserService;
 import com.csj.util.Convert;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

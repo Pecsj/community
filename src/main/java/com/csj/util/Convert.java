@@ -1,6 +1,6 @@
 package com.csj.util;
 
-import com.csj.domain.GithubUser;
+import com.csj.domain.dto.GithubUser;
 import com.csj.domain.User;
 
 /**

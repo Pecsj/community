@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置持久层接口的映射文件 -->
+<mapper namespace="com.csj.mapper.ListArticleMapper">
+
+    <resultMap id="listArticleMap" type="com.csj.domain.dto.ListArticle">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="description" column="description"></result>
+        <result property="gmtCreat" column="gmt_creat"></result>
+        <result property="gmtModified" column="gmt_modified"></result>
+        <result property="creator" column="creator"></result>
+        <result property="viewCount" column="view_count"></result>
+        <result property="commentCount" column="comment_count"></result>
+        <result property="likeCount" column="like_count"></result>
+        <association property="user" javaType="com.csj.domain.User">
+            <result property="name" column="name"></result>
+            <result property="avatarUrl" column="avatar_url"></result>
+        </association>
+    </resultMap>
+    <select id="findAll" resultMap="listArticleMap">
+        SELECT a.*,b.`name`,b.`avatar_url`
+         FROM article a
+         LEFT JOIN USER b
+         ON a.`creator`=b.`id`
+    </select>
+
+</mapper>

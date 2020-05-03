@@ -1,4 +1,4 @@
-package com.csj.domain;
+package com.csj.domain.dto;
 
 import java.util.UUID;
 
