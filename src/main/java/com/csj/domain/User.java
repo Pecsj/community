@@ -76,6 +76,7 @@ public class User implements Serializable {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", token='" + token + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }

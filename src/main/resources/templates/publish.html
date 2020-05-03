@@ -19,7 +19,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
             </button>
-            <a class="navbar-brand" href="#">杰享</a>
+            <a class="navbar-brand" th:href="@{/}">杰享</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,7 +44,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span th:text="${session.user.getName()}"></span>
                         <span class="caret"></span>
-                        <img th:src="${session.user.getAvatarUrl()}" width="25px" height="25px">
+                        <img th:src="${session.user.getAvatarUrl()}" class="img-circle" width="25px" height="25px">
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">我的发帖</a></li>

@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//https://github.com/login/oauth/authorize?client_id=5963292120217c7f7844&state=1&redirect_uri=http://localhost/csj/callback&scope=user
+
 @Controller
 @SessionAttributes("user")
 public class AuthController {
@@ -50,6 +51,7 @@ public class AuthController {
     @GetMapping("/callback")
     public String callBack(String code,
                            ModelMap modelMap,
+                           HttpServletRequest request,
                            HttpServletResponse response) throws Exception{
         AccessToken accessToken = new AccessToken();
         accessToken.setClient_id(clientId);
@@ -61,8 +63,17 @@ public class AuthController {
         //获取token码
         String token = okHttp.getAccessToken(accessToken);
         //根据token 获取用户信息
-        Thread.sleep(1000);//有时会出现服务器过早关闭链接导致空指针异常(github延迟高)出现commitreset,和网络有关
-        GithubUser guser = okHttp.getUser(token);
+        GithubUser guser = null;
+        int count = 0;
+        while (guser==null&&count<5){
+            if(count==4){
+                request.setAttribute("error","与github链接超时");
+                return "index";
+            }
+            count++;
+            Thread.sleep(1000);//有时会出现服务器过早关闭链接导致空指针异常(github延迟高)出现commitreset,和网络有关
+            guser = okHttp.getUser(token);
+        }
 
         //查看数据库中是否存在
         if(!userService.isExistByName(guser.getLogin())){

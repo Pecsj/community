@@ -14,7 +14,16 @@
         insert into user(name,password,age,email,token,avatar_url) values (#{name},#{password},#{age},#{email},#{token},#{avatarUrl})
     </insert>
 
-    <select id="findByToken" parameterType="String" resultType="com.csj.domain.User">
+    <resultMap id="userMap" type="com.csj.domain.User">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="password" column="password"></result>
+        <result property="age" column="age"></result>
+        <result property="email" column="email"></result>
+        <result property="token" column="token"></result>
+        <result property="avatarUrl" column="avatar_url"></result>
+    </resultMap>
+    <select id="findByToken" parameterType="String" resultMap="userMap">
         select * from user where token = #{token}
     </select>
 
