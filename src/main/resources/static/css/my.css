@@ -21,3 +21,16 @@ body{
     line-height: 30px;
     height: 30px;
 }
+
+.registerBox{
+    padding-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    border-left: #cccccc 5px solid;
+    border-right: #cccccc 5px solid;
+    border-top-left-radius: 10px 20px;
+    border-top-right-radius: 10px 20px;
+    border-bottom-right-radius: 10px 20px;
+    border-bottom-left-radius: 10px 20px;
+}
+

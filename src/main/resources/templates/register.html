@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>发帖</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+
+</head>
+<body>
+<!--		导航条-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+            </button>
+            <a class="navbar-brand" th:href="@{/}">杰享</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索帖子">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}">
+                    <a th:href="${#httpServletRequest.getContextPath()+'/publish'}" style="margin-top: 3px">发帖</a>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a th:href="@{/github}">github登录</a>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a th:href="@{/register}">注册</a>
+                </li>
+                <li th:if="${session.user != null}" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span th:text="${session.user.getName()}"></span>
+                        <span class="caret"></span>
+                        <img th:src="${session.user.AvatarUrl !=''} ? ${session.user.AvatarUrl} :'img/default.jpg'" class="img-circle" width="25px" height="25px">
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="#">我的发帖</a></li>
+                        <li><a href="#">消息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--		滚动公告-->
+<div th:if="${session.message}!=null">
+    <p th:text="${session.message}"></p>
+</div>
+<!--		内容-->
+<div class="container-fluid main">
+    <div class="row">
+        <div class="registerBox col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+            <form class="form-horizontal" action="" method="post">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-md-10">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">重复密码</label>
+                    <div class="col-md-10">
+                        <input type="password" class="form-control" id="repassword" name="repassword" placeholder="重复密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">邮箱</label>
+                    <div class="col-md-10">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox col-md-3">
+                            <label>
+                                <input type="radio" name="gender" value="男"> 男
+                            </label>
+                        </div>
+                        <div class="checkbox col-md-3">
+                            <label>
+                                <input type="radio" name="gender" value="女"> 女
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age" class="col-sm-2 control-label">年龄</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="submit" class="btn btn-default">注册</button></div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">录入人脸</button>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="reset" class="btn btn-default">重置</button></div>
+                    </div>
+                </div>
+<!--                隐藏域，存放人脸的base64编码-->
+                <input type="text" name="base64Img" id="base64Img" value="" hidden>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--			底部-版权信息-->
+
+
+
+
+
+
+
+
+
+<!--模态框-->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">录入人脸信息</h4>
+            </div>
+            <div class="modal-body container" style="width: 860px">
+
+                <div class="row">
+                    <!--h5视频区-->
+                    <div style="border: 1px solid;width: 420px;float: left">
+                        <div id="div_video" >
+                            <video id="myVideo" width="300px" height="300px" autoplay="autoplay"></video></br>
+                            <button class="btn btn-default" id="control" onclick="requestopen()">打开摄像头</button>
+                        </div>
+                    </div>
+                    <!--拍照-->
+                    <div style="border: 1px solid;width: 420px;float: right">
+                        <div id="div_canvas" >
+                            <canvas id="canvas" width="300px" height="300px"></canvas>
+                            <br>
+                            <button class="btn btn-default" id="snap" onclick="snap()">拍照</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    window.onload = function(){
+        hasNavigator();
+    }
+    function hasNavigator() {
+        //要获取摄像头，首先必须要有navigator对象，界面打开的时候就要初始化
+        navigator.getUserMedia
+        || (navigator.getUserMedia = navigator.mozGetUserMedia
+            || navigator.webkitGetUserMedia
+            || navigator.msGetUserMedia);
+        if (navigator.getUserMedia) {
+            console.log("浏览器兼容，可以打开摄像头");
+        } else {
+            console.log('your browser not support getUserMedia');
+        }
+    }
+
+    //			获取视频显示区域,控制按钮，流对象
+    var video = document.getElementById("myVideo");
+    var control = document.getElementById("control");
+    var localStream = null;
+
+
+    //请求打开
+    function requestopen(){
+        if(localStream == null){
+            //开启摄像头
+            open();
+        }else{
+            //关闭摄像头
+            close();
+        }
+    }
+    //打开摄像头
+    function open() {
+        //设置打开参数，只开启video
+        let constraints = {
+            video: {width: 300, height: 300},
+            audio: false
+        };
+        let promise = navigator.mediaDevices.getUserMedia(constraints);
+        //打开成功，打开失败的回调
+        promise.then(function (MediaStream) {
+            control.innerText="关闭摄像头";
+            console.log("开启摄像头成功");
+            localStream = MediaStream;
+            video.srcObject = MediaStream;
+            video.play();
+        }).catch(function (PermissionDeniedError) {
+            console.log(PermissionDeniedError);
+        })
+    }
+    //关闭摄像头
+    function close(){
+        localStream.getVideoTracks()[0].stop();
+        video.srcObject = null;
+        localStream = null;
+        console.log("关闭摄像头成功");
+        control.innerText="打开摄像头";
+    }
+    //------------------------------------------------------------------------------------------
+    //拍照,并将图片编码为base64放入隐藏域
+    var inputImg = document.getElementById("base64Img");
+    var canvas = document.getElementById("canvas");
+    function snap(){
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, 300, 300,0,0,300,300);
+
+        let codedata = canvas.toDataURL('image/png', 1);
+        inputImg.value = codedata;
+    }
+</script>
+</body>
+</html>

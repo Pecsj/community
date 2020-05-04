@@ -6,10 +6,19 @@ public class User implements Serializable {
     private Integer id;
     private String name;
     private String password;
+    private String gender;
     private Integer age;
     private String email;
     private String token;
     private String avatarUrl;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -73,6 +82,7 @@ public class User implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", token='" + token + '\'' +

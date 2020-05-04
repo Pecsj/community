@@ -32,6 +32,14 @@ public class UserService implements IUserService {
     }
 
     /**
+     * 添加用户
+     * @param user
+     */
+    public void insertUser(User user){
+        userMapper.insert(user);
+    }
+
+    /**
      * 根据token查询用户
      * @param token
      * @return

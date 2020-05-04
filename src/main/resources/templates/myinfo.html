@@ -18,7 +18,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
             </button>
-            <a class="navbar-brand" href="#">杰享</a>
+            <a class="navbar-brand" th:href="@{/}">杰享</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -31,22 +31,24 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${session.user != null}">
-                    <a href="/publish">发帖</a>
+                    <a th:href="${#httpServletRequest.getContextPath()+'/publish'}" style="margin-top: 3px">发帖</a>
                 </li>
                 <li th:if="${session.user == null}">
-                    <a href="https://github.com/login/oauth/authorize?client_id=5963292120217c7f7844&state=1&redirect_uri=http://localhost/csj/callback">github登陆</a>
+                    <a th:href="@{/github}">github登录</a>
                 </li>
                 <li th:if="${session.user == null}">
-                    <a href="#">注册</a>
+                    <a th:href="@{/register}">注册</a>
                 </li>
                 <li th:if="${session.user != null}" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span th:text="${session.user.getName()}"></span>
                         <span class="caret"></span>
+                        <img th:src="${session.user.AvatarUrl !=''} ? ${session.user.AvatarUrl} :'img/default.jpg'" class="img-circle" width="25px" height="25px">
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a href="#">个人信息</a></li>
                         <li><a href="#">我的发帖</a></li>
-                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">消息</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">注销</a></li>
                     </ul>

@@ -8,6 +8,7 @@ import java.util.List;
 public interface IUserService {
     List<User> findAll();
     void insertGithubUser(GithubUser guser);
+    void insertUser(User user);
     User findByToken(String token);
     boolean isExistByName(String name);
     User findByName(String name);

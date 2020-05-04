@@ -35,7 +35,7 @@ public class PublishController {
         article.setCreator(id);
         //将文章存入数据库
         service.insert(article);
-        return "myarticle";
+        return "myinfo";
     }
 
 }

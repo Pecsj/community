@@ -11,7 +11,10 @@
     </select>
 
     <insert id="insert" parameterType="com.csj.domain.User">
-        insert into user(name,password,age,email,token,avatar_url) values (#{name},#{password},#{age},#{email},#{token},#{avatarUrl})
+        <selectKey keyProperty="id" keyColumn="id" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into user(name,password,age,gender,email,token,avatar_url) values (#{name},#{password},#{age},#{gender},#{email},#{token},#{avatarUrl})
     </insert>
 
     <resultMap id="userMap" type="com.csj.domain.User">

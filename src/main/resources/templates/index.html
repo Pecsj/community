@@ -37,17 +37,18 @@
 							<a th:href="@{/github}">github登录</a>
 						</li>
 						<li th:if="${session.user == null}">
-							<a href="#">注册</a>
+							<a th:href="@{/register}">注册</a>
 						</li>
 						<li th:if="${session.user != null}" class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 								<span th:text="${session.user.getName()}"></span>
 								<span class="caret"></span>
-								<img th:src="${session.user.getAvatarUrl()}" class="img-circle" width="25px" height="25px">
+								<img th:src="${session.user.AvatarUrl !='' && session.user.AvatarUrl !=null} ? ${session.user.AvatarUrl} :'img/default.jpg'" class="img-circle" width="25px" height="25px">
 							</a>
 							<ul class="dropdown-menu">
+								<li><a href="#">个人信息</a></li>
 								<li><a href="#">我的发帖</a></li>
-								<li><a href="#">消息中心</a></li>
+								<li><a href="#">消息</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a href="#">注销</a></li>
 							</ul>
@@ -74,7 +75,7 @@
 			<div th:if="${pageInfo != null}" class="media articleDiv" th:each="item : ${pageInfo.list}">
 				<div class="media-left">
 					<a href="#">
-						<img class="media-object img-rounded listimg" th:src="${item.user.avatarUrl != null} ? ${item.user.avatarUrl} : 'img/default.jpg'" alt="头像">
+						<img class="media-object img-rounded listimg" th:src="${item.user.avatarUrl != ''} ? ${item.user.avatarUrl} : 'img/default.jpg'" alt="头像">
 					</a>
 				</div>
 				<div class="media-body">
