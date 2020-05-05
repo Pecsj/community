@@ -237,12 +237,12 @@
     var inputImg = document.getElementById("base64Img");
     var canvas = document.getElementById("canvas");
     function snap(){
-        let canvas = document.getElementById("canvas");
-        let ctx = canvas.getContext('2d');
+        var ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0, 300, 300,0,0,300,300);
 
-        let codedata = canvas.toDataURL('image/png', 1);
-        inputImg.value = codedata;
+        var codedata = canvas.toDataURL('image/jpg');//转base64
+        console.log(codedata.substr(22));
+        inputImg.value = codedata.substr(22);//截取图片信息
     }
 </script>
 </body>

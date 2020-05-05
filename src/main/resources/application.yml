@@ -33,4 +33,9 @@ thymeleaf:
 page:
   pageCount: 5
 
+#百度AI设置
+baidu:
+  APP_ID: 19421391
+  API_KEY: mxLDBcbfdHFfdFVZ6ZLyQ6L0
+  SECRET_KEY: oDmgib1UiRYS5oe1mxXwvVDVdGZXjpkR
 
