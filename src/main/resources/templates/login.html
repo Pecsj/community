@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>注册</title>
+    <title>登录</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/my.css">
@@ -64,8 +64,8 @@
 <!--		内容-->
 <div class="container-fluid main">
     <div class="row">
-        <div class="registerBox col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-            <form class="form-horizontal" action="" method="post">
+        <div class="registerBox col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+            <form class="form-horizontal" th:action="@{/login}" method="post">
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">用户名</label>
                     <div class="col-md-10">
@@ -79,48 +79,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="repassword" class="col-sm-2 control-label">重复密码</label>
-                    <div class="col-md-10">
-                        <input type="password" class="form-control" id="repassword" name="repassword" placeholder="重复密码">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="email" class="col-sm-2 control-label">邮箱</label>
-                    <div class="col-md-10">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox col-md-3">
-                            <label>
-                                <input type="radio" name="gender" value="男"> 男
-                            </label>
-                        </div>
-                        <div class="checkbox col-md-3">
-                            <label>
-                                <input type="radio" name="gender" value="女"> 女
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="age" class="col-sm-2 control-label">年龄</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
-                    </div>
-                </div>
-                <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-6">
-                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="submit" class="btn btn-default">注册</button></div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="submit" class="btn btn-default">登录</button></div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">录入人脸</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">刷脸登录</button>
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="reset" class="btn btn-default">重置</button></div>
                     </div>
                 </div>
-<!--                隐藏域，存放人脸的base64编码-->
-                <input type="text" name="base64Img" id="base64Img" value="" hidden>
             </form>
         </div>
     </div>
@@ -159,7 +125,7 @@
                         <div id="div_canvas" >
                             <canvas id="canvas" width="300px" height="300px"></canvas>
                             <br>
-                            <button class="btn btn-default" id="snap" onclick="snap()">拍照</button>
+                            <button class="btn btn-default" id="snap" onclick="snap()">抓拍登录</button>
                         </div>
                     </div>
                 </div>
@@ -172,6 +138,8 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--隐藏域存储项目根目录-->
+<a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
 <script>
     window.onload = function(){
         hasNavigator();
@@ -234,15 +202,37 @@
     }
     //------------------------------------------------------------------------------------------
     //拍照,并将图片编码为base64放入隐藏域
-    var inputImg = document.getElementById("base64Img");
+    var inputImg;
     var canvas = document.getElementById("canvas");
+    //从隐藏域中获取项目根目录
+    var contextPath = $('#contextPath').attr('href');
     function snap(){
         var ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0, 300, 300,0,0,300,300);
 
         var codedata = canvas.toDataURL('image/jpg');//转base64
         console.log(codedata.substr(22));
-        inputImg.value = codedata.substr(22);//截取图片信息
+        inputImg = codedata.substr(22);//截取图片信息
+
+        console.log(contextPath);
+        //将inputImg数据传入后端调用百度AI接口
+        $.ajax({
+            "type":"post",
+            "url":contextPath+"login",
+            "datatype":"text",
+            "data":{"baseImg":inputImg},
+            "success":function (resp) {
+                if("ok"==resp){
+                    console.log("调用成功");
+                    window.location.replace(contextPath+"/index");
+                }else {
+                    console.log("调用失败");
+                }
+            },
+            "error" : function(e) {
+                console.log("ajax链接失败");
+            }
+        });
     }
 </script>
 </body>

@@ -12,4 +12,5 @@ public interface IUserService {
     User findByToken(String token);
     boolean isExistByName(String name);
     User findByName(String name);
+    User findById(Integer id);
 }

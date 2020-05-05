@@ -9,4 +9,11 @@ public interface IBaidu {
      */
     String addFace(int id,String name,String baseImg);
 
+    /**
+     * 向人脸库中匹配用户并返回id
+     * @param image
+     * @return
+     */
+    int faceSearch(String image);
+
 }

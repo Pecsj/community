@@ -67,5 +67,24 @@ public class controllerInit {
         return "index";
     }
 
+    /**
+     * 跳转到个人详情页面
+     * @return
+     */
+    @GetMapping("/myinfo")
+    public String myInfo(){
+        return "myinfo";
+    }
+
+    @GetMapping("/myarticle")
+    public String myArticle(){
+        return "myarticle";
+    }
+
+    @GetMapping("/mymessage")
+    public String myMessage(){
+        return "mymessage";
+    }
+
 
 }

@@ -32,4 +32,10 @@ public interface UserMapper {
      */
     User findByName(String name);
 
+    /**
+     * 根据用户id查询
+     * @param id
+     * @return
+     */
+    User findById(Integer id);
 }
