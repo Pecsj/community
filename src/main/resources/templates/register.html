@@ -65,7 +65,8 @@
 <div class="container-fluid main">
     <div class="row">
         <div class="registerBox col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-            <form class="form-horizontal" action="" method="post">
+            <p id="msg" style="color: red;visibility: hidden" value=""></p>
+            <form class="form-horizontal" action="" method="post" id="form">
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">用户名</label>
                     <div class="col-md-10">
@@ -112,13 +113,14 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-6">
-                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="submit" class="btn btn-default">注册</button></div>
+                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><a onclick="submit()" class="btn btn-default">注册</a></div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">录入人脸</button>
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4"><button type="reset" class="btn btn-default">重置</button></div>
                     </div>
                 </div>
+                <p style="color: red" th:text="${error}"></p>
 <!--                隐藏域，存放人脸的base64编码-->
                 <input type="text" name="base64Img" id="base64Img" value="" hidden>
             </form>
@@ -208,11 +210,11 @@
     //打开摄像头
     function open() {
         //设置打开参数，只开启video
-        let constraints = {
+        var constraints = {
             video: {width: 300, height: 300},
             audio: false
         };
-        let promise = navigator.mediaDevices.getUserMedia(constraints);
+        var promise = navigator.mediaDevices.getUserMedia(constraints);
         //打开成功，打开失败的回调
         promise.then(function (MediaStream) {
             control.innerText="关闭摄像头";
@@ -243,6 +245,30 @@
         var codedata = canvas.toDataURL('image/jpg');//转base64
         console.log(codedata.substr(22));
         inputImg.value = codedata.substr(22);//截取图片信息
+    }
+
+    //--------------------------------------------------------------------------------------
+    //校验表单
+    username = document.getElementById("name");
+    password = document.getElementById("password");
+    repassword = document.getElementById("repassword");
+    function submit() {
+        if(username.value == "" || username.value == null){
+            $(username).attr('placeholder','用户名不能为空');
+            alert("用户名不能为空");
+            return;
+        }
+        if(password.value == null || password.value==""){
+            $(password).attr('placeholder','密码不能为空');
+            alert("密码不能为空");
+            return;
+        }
+        if (password != repassword){
+            alert("两次密码不一致");
+            return;
+        }
+        $("#form").submit();
+        return;
     }
 </script>
 </body>

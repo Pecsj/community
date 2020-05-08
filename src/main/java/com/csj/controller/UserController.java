@@ -36,17 +36,24 @@ public class UserController {
     public String register(User user,
                            String base64Img,
                            HttpServletRequest request){
-        //存入数据库
-        user.setToken(UUID.randomUUID().toString());
-        userService.insertUser(user);
-        //存入session
-        request.getSession().setAttribute("user",user);
-        System.out.println("用户存入session");
-
         //调用百度AI添加用户
         System.out.println(base64Img);
-        baidu.addFace(user.getId(),user.getName(), base64Img);
-        return "redirect:index";
+        //判断百度云人脸库是否已经存在该用户
+        int id = baidu.faceSearch(base64Img);
+        if(id < 0){
+            //存入数据库
+            user.setToken(UUID.randomUUID().toString());
+            userService.insertUser(user);
+            //存入session
+            request.getSession().setAttribute("user",user);
+            System.out.println("用户存入session");
+            baidu.addFace(user.getId(),user.getName(), base64Img);
+            return "redirect:index";
+        }else{
+            //人脸库已经存在
+            request.setAttribute("error","人脸库中已存在该用户");
+            return "register";
+        }
     }
 
     /**
@@ -73,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * 用户普通登录
+     * 用户登录
      * @return
      */
     @PostMapping("/login")

@@ -38,6 +38,11 @@ public class ArticleService implements IArticleService {
     public PageInfo<ListArticle> findListArticle(int pageNumber,int count) {
         PageHelper.startPage(pageNumber,count);
         List<ListArticle> listArticles = listMapper.findAll();
+        for (ListArticle listArticle : listArticles) {
+            if (listArticle.getDescription().length()>10){
+                listArticle.setDescription(listArticle.getDescription().substring(0,9)+"......");//截取文章内容前十个字
+            }
+        }
         PageInfo<ListArticle> pageInfo = new PageInfo<>(listArticles);
         return pageInfo;
     }
