@@ -11,52 +11,7 @@
 </head>
 <body>
 <!--		导航条-->
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-            </button>
-            <a class="navbar-brand" th:href="@{/}">杰享</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="搜索帖子">
-                </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li th:if="${session.user != null}">
-                    <a th:href="${#httpServletRequest.getContextPath()+'/publish'}" style="margin-top: 3px">发帖</a>
-                </li>
-                <li th:if="${session.user == null}">
-                    <a th:href="@{/github}">github登录</a>
-                </li>
-                <li th:if="${session.user == null}">
-                    <a th:href="@{/register}">注册</a>
-                </li>
-                <li th:if="${session.user != null}" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span th:text="${session.user.getName()}"></span>
-                        <span class="caret"></span>
-                        <img th:src="${session.user.AvatarUrl !='' && session.user.AvatarUrl !=null} ? ${session.user.AvatarUrl} :'img/default.jpg'" class="img-circle" width="25px" height="25px">
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a th:href="@{/myinfo}">个人信息</a></li>
-                        <li><a th:href="@{/myarticle}">我的发帖</a></li>
-                        <li><a th:href="@{/mymessage}">消息</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a th:href="@{/loginout}">注销</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="navigation :: nav"></div>
 <!--		滚动公告-->
 <div th:if="${session.message}!=null">
     <p th:text="${session.message}"></p>
@@ -99,7 +54,28 @@
 
 
 
-
+<!--错误提示模态框-->
+<div class="modal fade" id="errorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    登录失败
+                </h4>
+            </div>
+            <div class="modal-body">
+                <span id="msgSpan"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <!--模态框-->
@@ -132,7 +108,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">提交</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -141,8 +116,23 @@
 <!--隐藏域存储项目根目录-->
 <a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
 <script>
+    //获取请求参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
     window.onload = function(){
+        //查看是否支持摄像头
         hasNavigator();
+        //查看是否账号密码错误导致的跳转
+        var msg = getUrlParam("error");
+        if("userLogin"==msg){
+            //打开错误提示模态框
+            $('#msgSpan').html("用户名或密码错误");
+            $('#errorModel').modal('show');
+        }
     }
     function hasNavigator() {
         //要获取摄像头，首先必须要有navigator对象，界面打开的时候就要初始化
@@ -154,6 +144,7 @@
             console.log("浏览器兼容，可以打开摄像头");
         } else {
             console.log('your browser not support getUserMedia');
+            alert("你的环境不支持打开摄像头");
         }
     }
 
@@ -200,6 +191,8 @@
         console.log("关闭摄像头成功");
         control.innerText="打开摄像头";
     }
+
+
     //------------------------------------------------------------------------------------------
     //拍照,并将图片编码为base64放入隐藏域
     var inputImg;
@@ -221,12 +214,13 @@
             "url":contextPath+"login",
             "datatype":"text",
             "data":{"baseImg":inputImg},
-            "success":function (resp) {
-                if("ok"==resp){
+            "success":function (msg) {
+                if("ok"==msg){
                     console.log("调用成功");
                     window.location.replace(contextPath+"/index");
-                }else {
-                    console.log("调用失败");
+                }
+                if("baiduError"==msg){
+                    alert("人脸库不存在该用户");
                 }
             },
             "error" : function(e) {
@@ -234,6 +228,7 @@
             }
         });
     }
+
 </script>
 </body>
 </html>

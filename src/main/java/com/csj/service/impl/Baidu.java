@@ -74,6 +74,7 @@ public class Baidu implements IBaidu {
         if (score>90){
             return Integer.parseInt(userId);
         }else{
+            System.out.println("匹配值太小，低于80分");
             return -1;
         }
     }

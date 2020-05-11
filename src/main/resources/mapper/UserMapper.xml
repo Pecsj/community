@@ -37,4 +37,8 @@
     <select id="findById" parameterType="Integer" resultType="com.csj.domain.User">
         select * from user where id = #{id}
     </select>
+
+    <select id="findByNamePass" parameterType="String" resultType="com.csj.domain.User">
+        select * from user where name = #{name} and password = #{password}
+    </select>
 </mapper>

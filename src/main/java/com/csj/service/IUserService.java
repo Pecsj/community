@@ -13,4 +13,5 @@ public interface IUserService {
     boolean isExistByName(String name);
     User findByName(String name);
     User findById(Integer id);
+    User loginUser(String name, String password);
 }

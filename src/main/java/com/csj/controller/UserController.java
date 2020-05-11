@@ -9,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,25 +88,38 @@ public class UserController {
      */
     @PostMapping("/login")
     public void login (HttpServletRequest request,
-                        HttpServletResponse response) throws IOException {
+                       HttpServletResponse response,
+                       String name,
+                       String password) throws IOException, ServletException {
         response.setContentType("text/html; charset=utf-8");
 
         String image = request.getParameter("baseImg");
         System.out.println(image);
-        //调用百度AI
-        int id = baidu.faceSearch(image);
-        if(id<0){
-            //调用失败
-            response.getWriter().write("false");//写入到返回结果中
-            return;
+        int id = -1;
+        User user = null;
+        if(image!=null){
+            //调用百度AI
+            id = baidu.faceSearch(image);
+            if(id<0){
+                //调用失败
+                response.getWriter().write("baiduError");
+                return;
+            }
+            user = userService.findById(id);
+        }else{
+            //普通登录
+            user = userService.loginUser(name, password);
+            if (user == null){
+                response.sendRedirect("login?error=userLogin");
+                return;
+            }
         }
-        //调用成功查询数据库对应id用户
-        User user = userService.findById(id);
         System.out.println(user);
         //将查询的用户放到session和cookie中
         request.getSession().setAttribute("user",user);
         Cookie token = new Cookie("token",user.getToken());
         response.addCookie(token);
-        response.getWriter().write("ok");//写入到返回结果中
+        response.getWriter().write("ok");
+        return;
     }
 }

@@ -38,4 +38,11 @@ public interface UserMapper {
      * @return
      */
     User findById(Integer id);
+
+    /**
+     * 根据用户名和密码查询
+     * @return
+     */
+    User findByNamePass(String name,String password);
+
 }

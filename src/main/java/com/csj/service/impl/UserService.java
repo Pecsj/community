@@ -73,10 +73,22 @@ public class UserService implements IUserService {
         return user;
     }
 
+    /**
+     * 分局id查找用户
+     * @param id
+     * @return
+     */
     @Override
     public User findById(Integer id) {
         User user = userMapper.findById(id);
         return user;
     }
+
+    @Override
+    public User loginUser(String name, String password) {
+        User user = userMapper.findByNamePass(name,password);
+        return user;
+    }
+
 
 }
