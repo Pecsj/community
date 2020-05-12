@@ -2,7 +2,9 @@ package com.csj.controller;
 
 import com.csj.domain.User;
 import com.csj.domain.dto.ListArticle;
+import com.csj.domain.dto.UpdateXxx;
 import com.csj.service.IArticleService;
+import com.csj.service.IBaidu;
 import com.csj.service.IUserService;
 import com.csj.service.impl.UserService;
 import com.github.pagehelper.PageHelper;
@@ -27,6 +29,9 @@ public class controllerInit {
     private IUserService userservice;
     @Autowired
     private IArticleService articleService;
+    @Autowired
+    private IBaidu baidu;
+
     @Value("${page.pageCount}")
     private Integer pageCount;
 
@@ -72,7 +77,13 @@ public class controllerInit {
      * @return
      */
     @GetMapping("/myinfo")
-    public String myInfo(){
+    public String myInfo(boolean update,
+                         HttpServletRequest request){
+        if (update){
+            int id = ((User)request.getSession().getAttribute("user")).getId();
+            User user = userservice.findById(id);
+            request.getSession().setAttribute("user",user);
+        }
         return "myinfo";
     }
 
@@ -84,6 +95,22 @@ public class controllerInit {
     @GetMapping("/mymessage")
     public String myMessage(){
         return "mymessage";
+    }
+
+    @GetMapping("/update")
+    @ResponseBody
+    public String updateXxx(String key,String value,
+                            HttpServletRequest request){
+        int id = ((User)request.getSession().getAttribute("user")).getId();
+        int age=-1;
+        if("age".equals(key)){
+            age = Integer.parseInt(value);
+            userservice.updateAge(id,age);
+            return "ok";
+        }
+        UpdateXxx updateXxx = new UpdateXxx(id,key,value);
+        userservice.updateXxx(updateXxx);
+        return "ok";
     }
 
 

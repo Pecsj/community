@@ -11,6 +11,15 @@ public class User implements Serializable {
     private String email;
     private String token;
     private String avatarUrl;
+    private String face;
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
 
     public String getGender() {
         return gender;

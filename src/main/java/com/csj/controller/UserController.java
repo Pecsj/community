@@ -37,21 +37,26 @@ public class UserController {
      */
     @PostMapping("/register")
     public String register(User user,
-                           String base64Img,
                            HttpServletRequest request){
         //调用百度AI添加用户
-        System.out.println(base64Img);
+        System.out.println(user.getFace());
         //判断百度云人脸库是否已经存在该用户
-        int id = baidu.faceSearch(base64Img);
+        int id = baidu.faceSearch(user.getFace());
         if(id < 0){
-            //存入数据库
-            user.setToken(UUID.randomUUID().toString());
-            userService.insertUser(user);
-            //存入session
-            request.getSession().setAttribute("user",user);
-            System.out.println("用户存入session");
-            baidu.addFace(user.getId(),user.getName(), base64Img);
-            return "redirect:index";
+            if(!userService.isExistByName(user.getName())){
+                //存入数据库
+                user.setToken(UUID.randomUUID().toString());
+                userService.insertUser(user);
+                //存入session
+                request.getSession().setAttribute("user",user);
+                System.out.println("用户存入session");
+                baidu.addFace(user.getId(),user.getName(), user.getFace());
+                return "redirect:index";
+            }else{
+                //数据库有重名
+                System.out.println("数据库有重名");
+                return "register";
+            }
         }else{
             //人脸库已经存在
             request.setAttribute("error","人脸库中已存在该用户");

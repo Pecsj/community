@@ -2,6 +2,7 @@ package com.csj.service.impl;
 
 import com.csj.domain.dto.GithubUser;
 import com.csj.domain.User;
+import com.csj.domain.dto.UpdateXxx;
 import com.csj.mapper.UserMapper;
 import com.csj.service.IUserService;
 import com.csj.util.Convert;
@@ -88,6 +89,21 @@ public class UserService implements IUserService {
     public User loginUser(String name, String password) {
         User user = userMapper.findByNamePass(name,password);
         return user;
+    }
+
+    @Override
+    public boolean isExistFace(int id) {
+        return userMapper.isExistFace(id);
+    }
+
+    @Override
+    public void updateAge(Integer id, Integer age) {
+        userMapper.updateAge(id,age);
+    }
+
+    @Override
+    public void updateXxx(UpdateXxx updateXxx) {
+        userMapper.updateXxx(updateXxx);
     }
 
 

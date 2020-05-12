@@ -18,45 +18,54 @@
 </div>
 <!--		主题内容-->
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top: 50px">
         <!--            详情页-->
         <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
-            <table class="table table-hover">
+            <table class="table table-hover" th:object="${session.user}">
                 <tr>
                     <th>个人信息</th>
                 </tr>
                 <tr>
                     <td>姓名</td>
-                    <td>csj</td>
+                    <td th:text="*{name}"></td>
+                    <td><a href="javascript:getUpdate('name')">修改</a></td>
                 </tr>
                 <tr>
                     <td>密码</td>
-                    <td>123456</td>
+                    <td th:text="*{password}"></td>
+                    <td><a href="javascript:getUpdate('password')">修改</a></td>
                 </tr>
                 <tr>
                     <td>年龄</td>
-                    <td>50</td>
+                    <td th:text="*{age}"></td>
+                    <td><a href="javascript:getUpdate('age')">修改</a></td>
                 </tr>
                 <tr>
                     <td>性别</td>
-                    <td>男</td>
+                    <td th:text="*{gender}"></td>
+                    <td><a href="javascript:getUpdate('gender')">修改</a></td>
                 </tr>
                 <tr>
                     <td>邮箱地址</td>
-                    <td>123456@mail.com</td>
+                    <td th:text="*{email}"></td>
+                    <td><a href="javascript:getUpdate('email')">修改</a></td>
                 </tr>
                 <tr>
                     <td>人脸信息</td>
-                    <td>无</td>
+                    <td th:text="*{face != null && face!=''} ? '存在':'无信息'"></td>
+                    <td><a th:text="*{face != null && face!=''} ? '更新':'添加'" href="javascript:updateFace()"></a></td>
                 </tr>
                 <tr>
                     <td>头像</td>
-                    <td>http://****.****</td>
+                    <td>
+                        <img th:src="${session.user.AvatarUrl !='' && session.user.AvatarUrl !=null} ? ${session.user.AvatarUrl} :'img/default.jpg'" class="img-circle" width="25px" height="25px">
+                    </td>
+                    <td><a href="javascript:getUpdate('avatarUrl')">修改</a></td>
                 </tr>
             </table>
         </div>
         <!--            功能栏-->
-        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" style="margin-top: 50px" th:insert="rightList :: list"></div>>
+        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 col-md-offset-1" th:insert="rightList :: list"></div>
     </div>
 </div>
 
@@ -64,8 +73,35 @@
 
 
 
+<!--隐藏域存储项目根目录-->
+<a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
+<script>
+    var contextPath = $('#contextPath').attr('href');
+    function getUpdate(name) {
+        var value = prompt("输入修改的值：");
+        if (value == null || value == "") {
+            return;
+        } else {
+            console.log(name,value);
+        }
+        console.log(contextPath+"update?"+"key="+name+"&value="+value);
+        $.ajax({
+            type:"get",
+            url:contextPath+"update?"+"key="+name+"&value="+value,
+            success:function (msg) {
+                if("ok"==msg){
+                    console.log("更新成功");
+                    window.location.replace(contextPath+"/myinfo?update=true");
+                }
+            },
+            error: function(e) {
+                console.log("ajax链接失败");
+            }
+        });
+    }
 
 
+</script>
 
 </body>
 </html>

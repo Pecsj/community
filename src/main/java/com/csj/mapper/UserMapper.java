@@ -1,6 +1,7 @@
 package com.csj.mapper;
 
 import com.csj.domain.User;
+import com.csj.domain.dto.UpdateXxx;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -45,4 +46,19 @@ public interface UserMapper {
      */
     User findByNamePass(String name,String password);
 
+    /**
+     * 根据id查询该用户是否存在face信息
+     * @return
+     */
+    boolean isExistFace(Integer id);
+
+    /**
+     * 更新用户
+     */
+    void updateXxx(UpdateXxx updateXxx);
+
+    /**
+     * 更新用户age
+     */
+    void updateAge(Integer id,Integer age);
 }

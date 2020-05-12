@@ -77,7 +77,7 @@
                 </div>
                 <p style="color: red" th:text="${error}"></p>
 <!--                隐藏域，存放人脸的base64编码-->
-                <input type="text" name="base64Img" id="base64Img" value="" hidden>
+                <input type="text" name="face" id="face" value="" hidden>
             </form>
         </div>
     </div>
@@ -191,7 +191,7 @@
     }
     //------------------------------------------------------------------------------------------
     //拍照,并将图片编码为base64放入隐藏域
-    var inputImg = document.getElementById("base64Img");
+    var inputImg = document.getElementById("face");
     var canvas = document.getElementById("canvas");
     function snap(){
         var ctx = canvas.getContext('2d');
@@ -218,7 +218,7 @@
             alert("密码不能为空");
             return;
         }
-        if (password != repassword){
+        if (password.value != repassword.value){
             alert("两次密码不一致");
             return;
         }

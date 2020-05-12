@@ -14,17 +14,19 @@
         <selectKey keyProperty="id" keyColumn="id" resultType="int">
             select last_insert_id()
         </selectKey>
-        insert into user(name,password,age,gender,email,token,avatar_url) values (#{name},#{password},#{age},#{gender},#{email},#{token},#{avatarUrl})
+        insert into user(name,password,age,gender,email,token,avatar_url,face) values (#{name},#{password},#{age},#{gender},#{email},#{token},#{avatarUrl},#{face})
     </insert>
 
     <resultMap id="userMap" type="com.csj.domain.User">
         <id property="id" column="id"></id>
         <result property="name" column="name"></result>
         <result property="password" column="password"></result>
+        <result property="gender" column="gender"></result>
         <result property="age" column="age"></result>
         <result property="email" column="email"></result>
         <result property="token" column="token"></result>
         <result property="avatarUrl" column="avatar_url"></result>
+        <result property="face" column="face"></result>
     </resultMap>
     <select id="findByToken" parameterType="String" resultMap="userMap">
         select * from user where token = #{token}
@@ -41,4 +43,20 @@
     <select id="findByNamePass" parameterType="String" resultType="com.csj.domain.User">
         select * from user where name = #{name} and password = #{password}
     </select>
+
+    <select id="isExistFace" parameterType="Integer" resultType="Boolean">
+        SELECT ISNULL(face) FROM USER WHERE id=#{id}
+    </select>
+
+    <update id="updateXxx" parameterType="com.csj.domain.dto.UpdateXxx">
+        UPDATE USER SET
+        <if test="key=='name'">name</if>
+        <if test="key=='password'">password</if>
+        <if test="key=='gender'">gender</if>
+        <if test="key=='email'">email</if>
+        <if test="key=='avatarUrl'">avatar_url</if>
+        <if test="key=='face'">face</if>
+         = #{value}
+        WHERE id = #{id}
+    </update>
 </mapper>
