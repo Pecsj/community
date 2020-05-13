@@ -15,4 +15,5 @@ public interface IArticleService {
 
     PageInfo<ListArticle> findListArticle(int pageNumber,int count);
 
+    PageInfo<Article> getMyArticlePage(int id,int pageNumber,int count);
 }

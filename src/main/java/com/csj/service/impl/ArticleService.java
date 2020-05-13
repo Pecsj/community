@@ -39,11 +39,24 @@ public class ArticleService implements IArticleService {
         PageHelper.startPage(pageNumber,count);
         List<ListArticle> listArticles = listMapper.findAll();
         for (ListArticle listArticle : listArticles) {
-            if (listArticle.getDescription().length()>10){
-                listArticle.setDescription(listArticle.getDescription().substring(0,9)+"......");//截取文章内容前十个字
+            if (listArticle.getDescription().length()>30){
+                listArticle.setDescription(listArticle.getDescription().substring(0,29)+"......");//截取文章内容前十个字
             }
         }
         PageInfo<ListArticle> pageInfo = new PageInfo<>(listArticles);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<Article> getMyArticlePage(int id,int pageNumber,int count) {
+        PageHelper.startPage(pageNumber,count);
+        List<Article> articleList = mapper.findById(id);
+        for (Article article : articleList) {
+            if (article.getDescription().length()>30){
+                article.setDescription(article.getDescription().substring(0,29)+"......");//截取文章内容前十个字
+            }
+        }
+        PageInfo<Article> pageInfo = new PageInfo<>(articleList);
         return pageInfo;
     }
 }

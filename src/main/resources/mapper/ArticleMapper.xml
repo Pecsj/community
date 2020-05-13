@@ -5,12 +5,24 @@
 
 <!-- 配置持久层接口的映射文件 -->
 <mapper namespace="com.csj.mapper.ArticleMapper">
-    <select id="findAll" resultType="com.csj.domain.Article">
-        select * from article
-    </select>
+    <resultMap id="articleMap" type="com.csj.domain.Article">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="description" column="description"></result>
+        <result property="tag" column="tag"></result>
+        <result property="gmtCreat" column="gmt_creat"></result>
+        <result property="gmtModified" column="gmt_modified"></result>
+        <result property="creator" column="creator"></result>
+        <result property="viewCount" column="view_count"></result>
+        <result property="commentCount" column="comment_count"></result>
+        <result property="likeCount" column="like_count"></result>
+    </resultMap>
 
     <insert id="insertArticle" parameterType="com.csj.domain.Article">
         insert into article(title,description,gmt_creat,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreat},#{gmtModified},#{creator},#{tag})
     </insert>
 
+    <select id="findById" parameterType="Integer" resultMap="articleMap">
+        select * from article where creator = #{id}
+    </select>
 </mapper>

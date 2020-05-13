@@ -99,7 +99,7 @@ public class UserController {
         response.setContentType("text/html; charset=utf-8");
 
         String image = request.getParameter("baseImg");
-        System.out.println(image);
+        System.out.println("image="+image);
         int id = -1;
         User user = null;
         if(image!=null){
@@ -125,6 +125,7 @@ public class UserController {
         Cookie token = new Cookie("token",user.getToken());
         response.addCookie(token);
         response.getWriter().write("ok");
+        response.sendRedirect("index");
         return;
     }
 }

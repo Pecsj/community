@@ -19,10 +19,10 @@ public interface ArticleMapper {
     public int findCount();
 
     /**
-     * 根据用户名查找文章
+     * 根据用户id查找文章
      * @return
      */
-    public List<Article> findByUsername(String username);
+    public List<Article> findById(Integer id);
 
     /**
      * 插入文章

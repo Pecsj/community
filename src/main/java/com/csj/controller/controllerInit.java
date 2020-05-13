@@ -87,16 +87,6 @@ public class controllerInit {
         return "myinfo";
     }
 
-    @GetMapping("/myarticle")
-    public String myArticle(){
-        return "myarticle";
-    }
-
-    @GetMapping("/mymessage")
-    public String myMessage(){
-        return "mymessage";
-    }
-
     @GetMapping("/update")
     @ResponseBody
     public String updateXxx(String key,String value,
