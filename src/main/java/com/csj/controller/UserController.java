@@ -125,7 +125,6 @@ public class UserController {
         Cookie token = new Cookie("token",user.getToken());
         response.addCookie(token);
         response.getWriter().write("ok");
-        response.sendRedirect("index");
         return;
     }
 }

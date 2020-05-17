@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>主页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+
+</head>
+<body>
+<!--		导航条-->
+<div th:insert="navigation :: nav"></div>
+<!--		滚动公告-->
+<div th:if="${session.message}!=null">
+    <p th:text="${session.message}"></p>
+</div>
+<!--		主题内容-->
+<div class="container-fluid main">
+    <div class="row">
+        <!--            栏目头-->
+        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+            <!--            巨幕题目-->
+            <div class="page-header">
+                <h1 th:text="${article.title}" class="text-center"></h1>
+                <p style="color: #999999;font-size: 16px" class="text-center">
+                    作者:<span style="border-right: #999999 1px solid;padding-right: 5px;color: #2aabd2"
+                             th:text="${user.name}"></span>
+                    阅读数:<span style="border-right: #999999 1px solid;padding-right: 5px"
+                              th:text="${article.viewCount}"></span>
+                    发布时间:<span style="border-right: #999999 1px solid;padding-right: 5px"
+                               th:text="${#dates.format(article.gmtCreat, 'yyyy-MM-dd')}"></span>
+                    最后修改时间:<span th:text="${#dates.format(article.gmtModified, 'yyyy-MM-dd')}"></span>
+                </p>
+            </div>
+            <hr>
+            <div>
+                <p th:text="${article.description}" style="font-size: 20px;height: 300px;padding: 50px"></p>
+            </div>
+            <hr>
+            <div>
+                <p>
+                    作者:<span style="border-right: #999999 1px solid;padding-right: 5px" th:text="${user.name}"></span>
+                    标签:<span style="border-right: #999999 1px solid;padding-right: 5px;color: #2aabd2" th:text="${article.tag}"></span>
+                    评论:<span th:text="${article.commentCount}" style="color: #2aabd2"></span>
+                    <span style="float: right">
+                        喜欢<img th:if="${isLike==true}" src="img/like.png" alt="喜欢">
+                        <img width="25px" height="25px" th:if="${isLike!=true}" src="img/unlike.png" alt="不喜欢" onclick="like()" id="like">
+                    </span>
+                    <span style="float: right;margin-right: 100px">评论<img src="img/comment.png" alt="评论" width="25px" height="25px"></span>
+                </p>
+            </div>
+            <hr>
+
+        </div>
+
+        <!--            友情提示-->
+        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" style="margin-top: 50px">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    热门话题/标签
+                </div>
+                <div class="panel-footer">
+                    热门话题/标签
+                    * 你好
+                    * java
+                    * ssm
+                </div>
+            </div>
+
+            <div class="panel panel-danger">
+                <div class="panel-heading">实时疫情信息展示</div>
+                <div class="panel-body">
+                    <p>实时疫情信息展示</p>
+                </div>
+
+                <!-- Table -->
+                <table class="table">
+
+                </table>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    友情链接
+                </div>
+                <div class="panel-footer">
+                    <ul>
+                        <li><a href="http://www.baidu.com">百度</a></li>
+                        <li><a href="http://www.baidu.com">百度</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!--			底部-版权信息-->
+
+
+<!--模态框-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    用户未登录
+                </h4>
+            </div>
+            <div class="modal-body" th:text="${error}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script th:inline="javascript">
+    $(function () {
+        var msg = [[${error}]];
+        if (msg != "" && msg != null) {
+            $('#myModal').modal('show');
+        }
+    })
+</script>
+
+<!--隐藏域存储项目根目录-->
+<a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
+<input hidden id="uid" th:value="${session.user.id}">
+<input hidden id="aid" th:value="${article.id}">
+<script>
+    var contextPath = $('#contextPath').attr('href');
+    var uid = $("#uid").attr('value');
+    var aid = $("#aid").attr('value');
+    var likeImg = document.getElementById("like");
+    function like() {
+        if($(likeImg).attr("src")!="img/like.png"){
+            $.ajax({
+                type: "get",
+                url: contextPath + "doLike?uid=" + uid + "&aid=" + aid,
+                success: function (msg) {
+                    if (msg == 'true') {
+                        likeImg.src = "img/like.png";
+                    } else {
+                        alert('点赞失败');
+                    }
+                },
+                error: function (msg) {
+                    alert("调用失败");
+                }
+            })
+        }else{
+            alert("你已经点过赞啦！");
+        }
+    }
+</script>
+</body>
+</html>

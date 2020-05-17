@@ -18,4 +18,6 @@ public interface IUserService {
     boolean isExistFace(int id);
     void updateAge(Integer id,Integer age);
     void updateXxx(UpdateXxx updateXxx);
+
+    Integer likeArticle(int uid, int aid);
 }

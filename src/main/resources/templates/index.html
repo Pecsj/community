@@ -29,7 +29,7 @@
 <!--			帖子列表-->
 			<div th:if="${pageInfo != null}" class="media articleDiv" th:each="item : ${pageInfo.list}">
 				<div class="media-left">
-					<a href="#">
+					<a th:href="@{/lookArticle?aid=}+${item.id}">
 						<img class="media-object img-rounded listimg" th:src="${item.user.avatarUrl !='' && item.user.avatarUrl !=null} ? ${item.user.avatarUrl}:'img/default.jpg'" alt="头像">
 					</a>
 				</div>

@@ -61,4 +61,12 @@ public interface UserMapper {
      * 更新用户age
      */
     void updateAge(Integer id,Integer age);
+
+    /**
+     * 喜欢文章
+     * @param uid
+     * @param aid
+     * @return
+     */
+    Integer insertLike(int uid, int aid);
 }

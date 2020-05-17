@@ -47,6 +47,13 @@ public class ArticleService implements IArticleService {
         return pageInfo;
     }
 
+    /**
+     * 根据用户返回文章页面
+     * @param id
+     * @param pageNumber
+     * @param count
+     * @return
+     */
     @Override
     public PageInfo<Article> getMyArticlePage(int id,int pageNumber,int count) {
         PageHelper.startPage(pageNumber,count);
@@ -59,4 +66,20 @@ public class ArticleService implements IArticleService {
         PageInfo<Article> pageInfo = new PageInfo<>(articleList);
         return pageInfo;
     }
+
+    /**
+     * 根据文章id查找文章
+     * @return
+     */
+    public Article getArticle(int id){
+        Article article = mapper.findByAid(id);
+        return article;
+    }
+
+    @Override
+    public boolean isLike(Integer uid, Integer aid) {
+        Integer count = mapper.isLike(uid, aid);
+        return count!=null&&count>0?true:false;
+    }
+
 }

@@ -16,4 +16,8 @@ public interface IArticleService {
     PageInfo<ListArticle> findListArticle(int pageNumber,int count);
 
     PageInfo<Article> getMyArticlePage(int id,int pageNumber,int count);
+
+    Article getArticle(int aid);
+
+    boolean isLike(Integer uid, Integer aid);
 }

@@ -106,5 +106,10 @@ public class UserService implements IUserService {
         userMapper.updateXxx(updateXxx);
     }
 
+    @Override
+    public Integer likeArticle(int uid, int aid) {
+        return userMapper.insertLike(uid,aid);
+    }
+
 
 }

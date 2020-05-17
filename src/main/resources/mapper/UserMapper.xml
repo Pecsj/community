@@ -59,4 +59,9 @@
          = #{value}
         WHERE id = #{id}
     </update>
+
+    <insert id="insertLike" parameterType="Integer">
+        insert into like_article(uid,aid) values(#{uid},#{aid})
+    </insert>
+
 </mapper>

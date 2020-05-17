@@ -25,4 +25,13 @@
     <select id="findById" parameterType="Integer" resultMap="articleMap">
         select * from article where creator = #{id}
     </select>
+
+    <select id="findByAid" parameterType="Integer" resultMap="articleMap">
+        select * from article where id = #{id}
+    </select>
+
+    <select id="isLike" parameterType="Integer" resultType="Integer">
+        select count(*) from LIKE_ARTICLE where uid = #{uid} and aid = #{aid}
+    </select>
+
 </mapper>

@@ -30,4 +30,17 @@ public interface ArticleMapper {
     public void insertArticle(Article article);
 
 
+    /**
+     * 根据文章id查询
+     * @return
+     */
+    Article findByAid(Integer id);
+
+    /**
+     * 查询用户是否喜欢此文章
+     * @param uid
+     * @param aid
+     * @return
+     */
+    Integer isLike(Integer uid, Integer aid);
 }
