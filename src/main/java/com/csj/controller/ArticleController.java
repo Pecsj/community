@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 文章详情控制器
  */
@@ -23,12 +25,19 @@ public class ArticleController {
 
     @RequestMapping("/lookArticle")
     @ResponseBody
-    public ModelAndView lookArticle(int aid){
+    public ModelAndView lookArticle(int aid,
+                                    HttpServletRequest request){
         Article article = articleService.getArticle(aid);
         User user = userService.findById(article.getCreator());
         ModelAndView mv = new ModelAndView();
         boolean islike = articleService.isLike(user.getId(),article.getId());//用户是否喜欢该文章
-        System.err.println("用户是否喜欢"+islike);
+        articleService.addLook(aid);//阅读数+1
+        //该用户是否可编辑
+        User loginUser = (User) request.getSession().getAttribute("user");
+        mv.addObject("isEditor",false);
+        if (loginUser.getId()==user.getId()){
+            mv.addObject("isEditor",true);
+        }
         mv.addObject("isLike",islike);
         mv.addObject("user",user);
         mv.addObject("article",article);
@@ -43,8 +52,18 @@ public class ArticleController {
         if (rows==null||rows<=0){
             return "false";
         }else {
+            articleService.addLike(aid);
             return "true";
         }
+    }
+
+    @RequestMapping("/editArticle")
+    public ModelAndView doEdit(Integer aid){
+        Article article = articleService.getArticle(aid);
+        ModelAndView mv =new ModelAndView();
+        mv.addObject("article",article);
+        mv.setViewName("editArticle");
+        return mv;
     }
 
 }

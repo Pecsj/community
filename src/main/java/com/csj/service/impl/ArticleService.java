@@ -82,4 +82,23 @@ public class ArticleService implements IArticleService {
         return count!=null&&count>0?true:false;
     }
 
+    @Override
+    public void addLike(int aid) {
+        mapper.updateLike(aid);
+    }
+
+    @Override
+    public void addLook(int aid) {
+        mapper.updateLookCount(aid);
+    }
+
+    /**
+     * 更新文章内容
+     * @param article
+     */
+    @Override
+    public void updateArticle(Article article) {
+        mapper.updateArticle(article);
+    }
+
 }

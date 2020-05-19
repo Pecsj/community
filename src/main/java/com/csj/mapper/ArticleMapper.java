@@ -43,4 +43,22 @@ public interface ArticleMapper {
      * @return
      */
     Integer isLike(Integer uid, Integer aid);
+
+    /**
+     * 文章喜欢数+1
+     * @param aid
+     */
+    void updateLike(int aid);
+
+    /**
+     * 文章阅读数+1
+     * @param aid
+     */
+    void updateLookCount(int aid);
+
+    /**
+     * 更新文章内容
+     * @param article
+     */
+    void updateArticle(Article article);
 }

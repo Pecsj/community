@@ -83,18 +83,15 @@ public class AuthController {
             guser.setToken();
             userService.insertGithubUser(guser);
         }
-
-        //保存到session中持久化登录，将token保存到cookie中用作登录验证
         User user = Convert.gitToUser(guser);
-        modelMap.addAttribute("user",user);//使用modelMap和Attributes注解存入session
-        System.out.println("用户存入session");
-        //数据库中存在，取出授权码
+        //数据库中存在，取出授权码//保存到session中持久化登录，将token保存到cookie中用作登录验证
         user = userService.findByName(user.getName());
+        request.getSession().setAttribute("user",user);
+        System.out.println("用户存入session"+user);
         Cookie cookie = new Cookie("token", user.getToken());
         //测试使用值5分钟失效
         cookie.setMaxAge(60*5);
         response.addCookie(cookie);
-
         return modelAndView;
     }
 }

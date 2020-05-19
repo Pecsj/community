@@ -20,4 +20,10 @@ public interface IArticleService {
     Article getArticle(int aid);
 
     boolean isLike(Integer uid, Integer aid);
+
+    void addLike(int aid);
+
+    void addLook(int aid);
+
+    void updateArticle(Article article);
 }

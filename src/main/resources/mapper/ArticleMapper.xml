@@ -34,4 +34,15 @@
         select count(*) from LIKE_ARTICLE where uid = #{uid} and aid = #{aid}
     </select>
 
+    <update id="updateLike" parameterType="Integer">
+        update article set like_count = ifnull(like_count,0)+1 where id = #{aid}
+    </update>
+
+    <update id="updateLookCount" parameterType="Integer">
+        update article set view_count = ifnull(view_count,0)+1 where id = #{aid}
+    </update>
+
+    <update id="updateArticle" parameterType="com.csj.domain.Article">
+        update article set description = #{description},title=#{title},tag=#{tag},gmt_modified=#{gmtModified} where id = #{id}
+    </update>
 </mapper>

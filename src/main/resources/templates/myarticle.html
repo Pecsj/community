@@ -60,7 +60,7 @@
                     <!--					遍历标签-->
                     <li th:each="nav : ${pageInfo.navigatepageNums}" th:classappend="${pageInfo.pageNum == nav} ? 'active' : ''">
                         <!--当前页面是所在页面-->
-                        <a class="active" th:href="'index?pageNumber='+${nav}" th:text="${nav}"></a>
+                        <a class="active" th:href="'myarticle?pageNumber='+${nav}" th:text="${nav}"></a>
                     </li>
 
                     <!--					不是最后一页-->

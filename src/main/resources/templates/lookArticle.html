@@ -5,8 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/my.css">
+    <link rel="stylesheet" href="css/editormd.preview.min.css">
     <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/editormd.min.js"></script>
+    <script src="js/lib/marked.min.js"></script>
+    <script src="js/lib/prettify.min.js"></script>
 
 </head>
 <body>
@@ -35,17 +39,25 @@
                 </p>
             </div>
             <hr>
-            <div>
-                <p th:text="${article.description}" style="font-size: 20px;height: 300px;padding: 50px"></p>
+            <div id="markdown-view">
+                <textarea style="display: none" th:text="${article.description}"></textarea>
             </div>
+            <script type="text/javascript">
+                $(function () {
+                    editormd.markdownToHTML("markdown-view",{})
+                })
+            </script>
             <hr>
             <div>
                 <p>
                     作者:<span style="border-right: #999999 1px solid;padding-right: 5px" th:text="${user.name}"></span>
                     标签:<span style="border-right: #999999 1px solid;padding-right: 5px;color: #2aabd2" th:text="${article.tag}"></span>
                     评论:<span th:text="${article.commentCount}" style="color: #2aabd2"></span>
+                    <a th:href="@{/editArticle?aid=}+${article.id}" th:if="${isEditor==true}">
+                        <button type="button" class="btn btn-default btn-sm">修改</button>
+                    </a>
                     <span style="float: right">
-                        喜欢<img th:if="${isLike==true}" src="img/like.png" alt="喜欢">
+                        喜欢<img th:if="${isLike==true}" src="img/like.png" alt="喜欢" width="25px" height="25px">
                         <img width="25px" height="25px" th:if="${isLike!=true}" src="img/unlike.png" alt="不喜欢" onclick="like()" id="like">
                     </span>
                     <span style="float: right;margin-right: 100px">评论<img src="img/comment.png" alt="评论" width="25px" height="25px"></span>

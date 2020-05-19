@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Controller
 @SessionAttributes("error")
@@ -38,6 +40,11 @@ public class PublishController {
         return "redirect:myarticle";
     }
 
-
+    @RequestMapping("/updateArticle")
+    public String updateArticle(Article article){
+        article.setGmtModified(System.currentTimeMillis());
+        service.updateArticle(article);
+        return "redirect:lookArticle?aid="+article.getId();
+    }
 
 }
