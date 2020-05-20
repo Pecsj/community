@@ -149,7 +149,7 @@ CodeMirror.defineMode("asterisk", function() {
         } else {
           state.extenStart = false;
           stream.skipToEnd();
-          return "error";
+          return "templates.error.html";
         }
       } else if(state.extenExten) {
         // set exten and priority

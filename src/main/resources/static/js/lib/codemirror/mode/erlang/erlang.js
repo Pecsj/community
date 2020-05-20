@@ -158,7 +158,7 @@ CodeMirror.defineMode("erlang", function(cmCfg) {
     // dollar escape
     if (ch == "$") {
       if (stream.next() == "\\" && !stream.match(escapesRE)) {
-        return rval(state,stream,"error");
+        return rval(state,stream,"templates.error.html");
       }
       return rval(state,stream,"number");
     }
@@ -367,7 +367,7 @@ CodeMirror.defineMode("erlang", function(cmCfg) {
       case "colon":       return null;
       case "comment":     return "comment";
       case "dot":         return null;
-      case "error":       return "error";
+      case "templates.error.html":       return "templates.error.html";
       case "fun":         return "meta";
       case "function":    return "tag";
       case "guard":       return "property";

@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>错误</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/my.css">
+    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>错误！</h1>
+        <p th:value="${msg}"></p>
+        <p><a class="btn btn-primary btn-lg" th:href="@{/index}" role="button">返回主页</a></p>
+    </div>
+</div>
+</body>
+</html>

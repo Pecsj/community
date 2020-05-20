@@ -127,7 +127,7 @@
         //查看是否支持摄像头
         hasNavigator();
         //查看是否账号密码错误导致的跳转
-        var msg = getUrlParam("error");
+        var msg = getUrlParam("templates.error_xx.html");
         if("userLogin"==msg){
             //打开错误提示模态框
             $('#msgSpan').html("用户名或密码错误");

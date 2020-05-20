@@ -47,21 +47,6 @@ public class controllerInit {
     public String init(HttpServletRequest request,
                              Integer pageNumber
                              ){
-        Object sessionUser = request.getSession().getAttribute("user");
-        if(sessionUser==null){
-            //去cookie中查找用户是否持久化登录
-            Cookie[] cookies = request.getCookies();
-            if(cookies!=null){
-                for (Cookie cookie : cookies) {
-                    if("token".equals(cookie.getName())){
-                        //根据cookie中的token授权码获取用户
-                        User user = null;
-                        user = userservice.findByToken(cookie.getValue());
-                        request.getSession().setAttribute("user",user);
-                    }
-                }
-            }
-        }
 
         //获取文章列表
         if(pageNumber==null){

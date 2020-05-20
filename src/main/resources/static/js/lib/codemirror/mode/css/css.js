@@ -195,13 +195,13 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
         override = stream.match(/^\s*:(?:\s|$)/, false) ? "property" : "tag";
         return "block";
       } else {
-        override += " error";
+        override += " templates.error.html";
         return "maybeprop";
       }
     } else if (type == "meta") {
       return "block";
     } else if (!allowNested && (type == "hash" || type == "qualifier")) {
-      override = "error";
+      override = "templates.error.html";
       return "block";
     } else {
       return states.top(type, stream, state);
@@ -220,7 +220,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
     if (type == "(") return pushContext(state, stream, "parens");
 
     if (type == "hash" && !/^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/.test(stream.current())) {
-      override += " error";
+      override += " templates.error.html";
     } else if (type == "word") {
       wordAsValue(stream);
     } else if (type == "interpolation") {
@@ -273,7 +273,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       else if (valueKeywords.hasOwnProperty(word))
         override = "atom";
       else
-        override = "error";
+        override = "templates.error.html";
     }
     return state.context.type;
   };
@@ -302,7 +302,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
     if (type == "word") {
       if ((state.stateArg == "@font-face" && !fontProperties.hasOwnProperty(stream.current().toLowerCase())) ||
           (state.stateArg == "@counter-style" && !counterDescriptors.hasOwnProperty(stream.current().toLowerCase())))
-        override = "error";
+        override = "templates.error.html";
       else
         override = "property";
       return "maybeprop";
@@ -327,7 +327,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   states.interpolation = function(type, stream, state) {
     if (type == "}") return popContext(state);
     if (type == "{" || type == ";") return popAndPass(type, stream, state);
-    if (type != "variable") override = "error";
+    if (type != "variable") override = "templates.error.html";
     return "interpolation";
   };
 

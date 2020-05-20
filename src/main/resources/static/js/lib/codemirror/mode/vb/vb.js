@@ -12,7 +12,7 @@
 "use strict";
 
 CodeMirror.defineMode("vb", function(conf, parserConf) {
-    var ERRORCLASS = 'error';
+    var ERRORCLASS = 'templates.error.html';
 
     function wordRegexp(words) {
         return new RegExp("^((" + words.join(")|(") + "))\\b", "i");

@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestController {
 
     @RequestMapping("/test")
-    public String test1(ModelMap modelMap){
+    public String test1(ModelMap modelMap) throws Exception{
         modelMap.addAttribute("error","我是错误星系");
+
         return "publish";
     }
 

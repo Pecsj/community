@@ -46,7 +46,7 @@
   }
 
   CodeMirror.defineMode("python", function(conf, parserConf) {
-    var ERRORCLASS = "error";
+    var ERRORCLASS = "templates.error.html";
 
     var singleDelimiters = parserConf.singleDelimiters || new RegExp("^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]");
     var doubleOperators = parserConf.doubleOperators || new RegExp("^((==)|(!=)|(<=)|(>=)|(<>)|(<<)|(>>)|(//)|(\\*\\*))");

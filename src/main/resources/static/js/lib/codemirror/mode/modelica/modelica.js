@@ -87,7 +87,7 @@
       if(stream.eat("'"))
         return "variable";
       else
-        return "error";
+        return "templates.error.html";
     }
 
     function tokenUnsignedNuber(stream, state) {
@@ -171,7 +171,7 @@
         // ERROR
         else {
           state.tokenize = null;
-          return "error";
+          return "templates.error.html";
         }
 
         return state.tokenize(stream, state);
