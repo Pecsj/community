@@ -45,4 +45,8 @@
     <update id="updateArticle" parameterType="com.csj.domain.Article">
         update article set description = #{description},title=#{title},tag=#{tag},gmt_modified=#{gmtModified} where id = #{id}
     </update>
+
+    <select id="findHotList" resultMap="articleMap">
+        SELECT * FROM article ORDER BY view_count DESC LIMIT 5
+    </select>
 </mapper>

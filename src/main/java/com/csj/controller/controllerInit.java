@@ -72,21 +72,7 @@ public class controllerInit {
         return "myinfo";
     }
 
-    @GetMapping("/update")
-    @ResponseBody
-    public String updateXxx(String key,String value,
-                            HttpServletRequest request){
-        int id = ((User)request.getSession().getAttribute("user")).getId();
-        int age=-1;
-        if("age".equals(key)){
-            age = Integer.parseInt(value);
-            userservice.updateAge(id,age);
-            return "ok";
-        }
-        UpdateXxx updateXxx = new UpdateXxx(id,key,value);
-        userservice.updateXxx(updateXxx);
-        return "ok";
-    }
+
 
 
 }

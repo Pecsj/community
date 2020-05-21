@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="page">
+    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" style="margin-top: 50px">
+        <div class="panel panel-primary">
+            <div class="panel-body" style="font-size: 30px">
+                热门帖子
+            </div>
+            <div class="panel-footer">
+                <ul class="list-group">
+                    <li th:each="item : ${session.hotArticleList}" class="list-group-item">
+                        <!--当前页面是所在页面-->
+                        <a class="active" th:href="'lookArticle?aid='+${item.id}" th:text="${item.title}"></a>&nbsp;&nbsp;&nbsp;<span th:text="${#dates.format(item.gmtModified, 'yyyy-MM-dd')}"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">实时疫情信息展示</div>
+            <div class="panel-body">
+                <p>实时疫情信息展示</p>
+            </div>
+
+            <!-- Table -->
+            <table class="table">
+
+            </table>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                友情链接
+            </div>
+            <div class="panel-footer">
+                <ul>
+                    <li><a href="http://www.baidu.com">百度</a></li>
+                    <li><a href="http://www.baidu.com">百度</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

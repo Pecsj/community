@@ -1,6 +1,7 @@
 package com.csj.controller;
 
 import com.csj.domain.User;
+import com.csj.domain.dto.UpdateXxx;
 import com.csj.service.IBaidu;
 import com.csj.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
@@ -123,8 +125,21 @@ public class UserController {
         //将查询的用户放到session和cookie中
         request.getSession().setAttribute("user",user);
         Cookie token = new Cookie("token",user.getToken());
+        //测试值五分钟
+        token.setMaxAge(60*5);
         response.addCookie(token);
         response.getWriter().write("ok");
         return;
+    }
+
+    @GetMapping("/update")
+    @ResponseBody
+    public String updateXxx(String key,String value,
+                            HttpServletRequest request){
+        int id = ((User)request.getSession().getAttribute("user")).getId();
+
+        UpdateXxx updateXxx = new UpdateXxx(id,key,value);
+        userService.updateXxx(updateXxx);
+        return "ok";
     }
 }

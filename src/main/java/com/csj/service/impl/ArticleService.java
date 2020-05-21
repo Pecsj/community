@@ -101,4 +101,13 @@ public class ArticleService implements IArticleService {
         mapper.updateArticle(article);
     }
 
+    /**
+     * 获取热门文章信息
+     * @return
+     */
+    @Override
+    public List<Article> getHotList() {
+        return mapper.findHotList();
+    }
+
 }

@@ -26,4 +26,7 @@ public interface IArticleService {
     void addLook(int aid);
 
     void updateArticle(Article article);
+
+    List<Article> getHotList();
+
 }

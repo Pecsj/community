@@ -61,4 +61,10 @@ public interface ArticleMapper {
      * @param article
      */
     void updateArticle(Article article);
+
+    /**
+     * 获取热门文章
+     * @return
+     */
+    List<Article> findHotList();
 }
