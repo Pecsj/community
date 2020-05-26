@@ -1,5 +1,6 @@
 package com.csj.controller;
 
+import com.csj.domain.Article;
 import com.csj.domain.User;
 import com.csj.domain.dto.ListArticle;
 import com.csj.domain.dto.UpdateXxx;
@@ -47,6 +48,12 @@ public class controllerInit {
     public String init(HttpServletRequest request,
                              Integer pageNumber
                              ){
+        //是否有热门信息
+        Object sessionList = request.getSession().getAttribute("hotArticleList");
+        if (sessionList==null){
+            List<Article> hotArticleList = articleService.getHotList();
+            request.getSession().setAttribute("hotArticleList",hotArticleList);
+        }
 
         //获取文章列表
         if(pageNumber==null){

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置持久层接口的映射文件 -->
+<mapper namespace="com.csj.mapper.YiQingMapper">
+
+    <resultMap id="listArticleMap" type="com.csj.domain.dto.ListArticle">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="description" column="description"></result>
+        <result property="gmtCreat" column="gmt_creat"></result>
+        <result property="gmtModified" column="gmt_modified"></result>
+        <result property="creator" column="creator"></result>
+        <result property="viewCount" column="view_count"></result>
+        <result property="commentCount" column="comment_count"></result>
+        <result property="likeCount" column="like_count"></result>
+        <association property="user" javaType="com.csj.domain.User">
+            <result property="name" column="name"></result>
+            <result property="avatarUrl" column="avatar_url"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertCountry" parameterType="com.csj.domain.Country">
+        insert into country(modifyTime,continents,provinceName,currentConfirmedCount,confirmedCount,confirmedCountRank,curedCount,deadCount,deadCountRank,deadRate,deadRateRank)
+         values(FROM_UNIXTIME(#{modifyTime}),#{continents},#{provinceName},#{currentConfirmedCount},#{confirmedCount},#{confirmedCountRank},#{curedCount},#{deadCount},#{deadCountRank},#{deadRate},#{deadRateRank})
+    </insert>
+
+    <update id="updateCountry" parameterType="com.csj.domain.Country">
+        update country set modifyTime = FROM_UNIXTIME(#{modifyTime}),continents = #{continents},currentConfirmedCount = #{currentConfirmedCount},confirmedCount = #{confirmedCount},
+         confirmedCountRank = #{confirmedCountRank},curedCount = #{curedCount},deadCount = #{deadCount},deadCountRank = #{deadCountRank},deadRate = #{deadRate},deadRateRank = #{deadRateRank}
+         where provinceName = #{provinceName}
+    </update>
+
+    <select id="findCountryByName" parameterType="String" resultType="com.csj.domain.Country">
+        select * from country where provinceName like #{name}
+    </select>
+
+    <select id="findSortCountries" resultType="com.csj.domain.Country">
+        SELECT * FROM country WHERE confirmedCountRank IS NOT NULL ORDER BY confirmedCountRank LIMIT 5
+    </select>
+</mapper>

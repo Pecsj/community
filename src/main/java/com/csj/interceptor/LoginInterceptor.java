@@ -24,15 +24,12 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //是否有热门信息
-        Object sessionList = request.getSession().getAttribute("hotArticleList");
-        if (sessionList==null){
-            List<Article> hotArticleList = articleService.getHotList();
-            request.getSession().setAttribute("hotArticleList",hotArticleList);
-        }
 
         Object sessionUser = request.getSession().getAttribute("user");
         if(sessionUser==null){
+            if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
+                return true;
+            }
             //去cookie中查找用户是否持久化登录
             Cookie[] cookies = request.getCookies();
             if(cookies!=null){

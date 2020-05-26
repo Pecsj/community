@@ -21,15 +21,87 @@
         </div>
 
         <div class="panel panel-danger">
-            <div class="panel-heading">实时疫情信息展示</div>
-            <div class="panel-body">
-                <p>实时疫情信息展示</p>
+            <div class="panel-heading">
+                实时疫情信息展示
+                <span  style="float: right;font-size: 16px;cursor: pointer" onclick="goInfoPage()">查看更多</span>
+                <!--隐藏域存储项目根目录-->
+                <a hidden id="ctx" th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "></a>
+                <script>
+                    function goInfoPage() {
+                        debugger
+                        var ctx = $("#ctx").attr("href");
+                        window.location.href=ctx+"goInfoPage";
+                    }
+                </script>
             </div>
+<!--            疫情图标框-->
+            <div id="show_div" class="panel-body" style="width: 100%;height: 300px;padding-left: 20px"></div>
+            <script type="text/javascript">
+                $(function () {
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('show_div'));
+                    myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+                    // 指定图表的配置项和数据
+                    var option = {
+                        tooltip: {},
+                        legend: {
+                            data:['累计确诊']
+                        },
+                        xAxis: {
+                            data: []
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name : '万',
+                            axisLabel:{
+                                // y轴数据格式化
+                                formatter:function(value) {
+                                    // 千分位分隔符
+                                    return (Math.round((value || 0)/10000)).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+                                }
+                            }
+                        },
+                        series: [{
+                            name: '累计确诊',
+                            type: 'bar',
+                            data: []
+                        }]
+                    };
+                    // 使用刚指定的配置项和数据显示空图表。
+                    myChart.setOption(option);
+                    var path = $("#ctx").attr("href")+"getFiveCountries";
+                    var xDate;
+                    var vDate;
+                    debugger
+                    $.ajax({
+                        type:"get",
+                        url:path,
+                        dateType:"application/json",
+                        success:function (result) {
+                            xDate = result.nameDate;
+                            vDate = result.valueDate;
+                            myChart.hideLoading();  // 隐藏 loading 效果
+                            myChart.setOption({        //加载数据图表
+                                xAxis: {
+                                    data: xDate
+                                },
+                                series: [{
+                                    data: vDate
+                                }]
+                            });
+                            console.log("获取疫情信息成功");
+                        },
+                        error:function () {
+                            console.log("获取疫情信息失败");
+                        }
+                    });
 
-            <!-- Table -->
-            <table class="table">
+                })
 
-            </table>
+
+
+            </script>
+
         </div>
 
         <div class="panel panel-default">
@@ -45,6 +117,8 @@
         </div>
     </div>
 </div>
+
+
 
 </body>
 
