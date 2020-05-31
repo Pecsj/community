@@ -48,7 +48,7 @@ public class YiQingUtil {
         for (int i = 0; i < array.size(); i++) {
             JSONObject jsonObject = array.getJSONObject(i);
             Province province = JSON.toJavaObject(jsonObject, Province.class);
-            provinceMap.put(province.getProvinceName(),province);
+            provinceMap.put(province.getProvinceShortName(),province);
         }
         return provinceMap;
     }

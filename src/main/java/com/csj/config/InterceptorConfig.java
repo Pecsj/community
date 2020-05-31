@@ -28,7 +28,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     // 这个方法用来注册拦截器，我们自己写好的拦截器需要通过这里添加注册才能生效
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login","/github","/register","/","/index","/css/**","/js/**/","/img/**","/images/**","/fonts/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login","/github","/callback","/register","/","/index","/css/**","/js/**/","/img/**","/images/**","/fonts/**");
     }
 
 }

@@ -12,6 +12,13 @@
     <!--引入中国的地图数据js文件，引入后会自动注册地图名字和数据-->
     <script src="https://www.echartsjs.com/examples/vendors/echarts/map/js/china.js?_v_=1578305236132"></script>
 </head>
+<style>
+    #chinaMap {
+        width: 800px;
+        height: 500px;
+        margin: 100px auto;
+    }
+</style>
 <body>
 <!--		导航条-->
 <div th:insert="navigation :: nav"></div>
@@ -21,8 +28,101 @@
 </div>
 <!--		主题内容-->
 <div class="container-fluid main">
-1111111111111111111
+    <div class="row">
+        <div id="chinaMap"></div>
+    </div>
 </div>
+
+
+<!--隐藏域存储项目根目录-->
+<a hidden id="ctx" th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "></a>
+
+<script>
+    $(function () {
+        //初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chinaMap'));
+        myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                text: '中国疫情图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['中国疫情图']
+            },
+            visualMap: {
+                type: 'piecewise',
+                pieces: [
+                    { min: 1000, max: 1000000, label: '大于等于1000人', color: '#372a28' },
+                    { min: 500, max: 999, label: '确诊500-999人', color: '#4e160f' },
+                    { min: 100, max: 499, label: '确诊100-499人', color: '#974236' },
+                    { min: 10, max: 99, label: '确诊10-99人', color: '#ee7263' },
+                    { min: 1, max: 9, label: '确诊1-9人', color: '#f5bba7' },
+                ],
+                color: ['#E0022B', '#E09107', '#A3E00B']
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            roamController: {
+                show: true,
+                left: 'right',
+                mapTypeControl: {
+                    'china': true
+                }
+            },
+            series: []
+        };
+        //使用指定的配置项和数据显示图表
+        myChart.setOption(option);
+        var path = $("#ctx").attr("href")+"getChinaInfo";
+        $.ajax({
+            type:"get",
+            url:path,
+            dateType:"application/json",
+            success:function (result) {
+                myChart.hideLoading();  // 隐藏 loading 效果
+                myChart.setOption({        //加载数据图表
+                    series: [
+                        {
+                            name: '确诊数',
+                            type: 'map',
+                            mapType: 'china',
+                            roam: false,
+                            label: {
+                                show: true,
+                                color: 'rgb(249, 249, 249)'
+                            },
+                            data: result
+                        }
+                    ]
+                });
+                console.log("获取疫情信息成功");
+            },
+            error:function () {
+                console.log("获取疫情信息失败");
+            }
+        });
+
+    })
+</script>
+
+
 
 <!--			底部-版权信息-->
 

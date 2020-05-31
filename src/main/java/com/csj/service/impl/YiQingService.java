@@ -1,6 +1,7 @@
 package com.csj.service.impl;
 
 import com.csj.domain.Country;
+import com.csj.domain.Province;
 import com.csj.mapper.YiQingMapper;
 import com.csj.service.IYiQingService;
 import com.csj.util.YiQingUtil;
@@ -8,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class YiQingService implements IYiQingService {
@@ -72,6 +72,64 @@ public class YiQingService implements IYiQingService {
     @Override
     public List<Country> findSortCountries() {
         return mapper.findSortCountries();
+    }
+
+    /**
+     * 插入各省份疫情信息
+     * @param provinces
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean insertProvinces(Map<String, Province> provinces) {
+        boolean flag = false;
+        if(provinces.size()>0){
+            try {
+                Iterator<String> iterator = provinces.keySet().iterator();
+                while (iterator.hasNext()){
+                    String key = iterator.next();
+                    Province province = provinces.get(key);
+                    mapper.insertProvince(province);
+                }
+            }catch (Exception e){
+                flag = false;
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 更新各省份疫情信息
+     * @param provinces
+     * @return
+     */
+    @Override
+    public boolean updateProvinces(Map<String, Province> provinces) {
+        boolean flag = false;
+        if(provinces.size()>0){
+            try {
+                Iterator<String> iterator = provinces.keySet().iterator();
+                while (iterator.hasNext()){
+                    String key = iterator.next();
+                    Province province = provinces.get(key);
+                    mapper.updateProvince(province);
+                }
+            }catch (Exception e){
+                flag = false;
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 获取各省份疫情信息
+     * @return
+     */
+    @Override
+    public List<Province> findProvinces() {
+        return mapper.findProvinces();
     }
 
 

@@ -1,7 +1,9 @@
 package com.csj.service.impl;
 
 import com.csj.domain.Article;
+import com.csj.domain.CommentLike;
 import com.csj.domain.dto.ListArticle;
+import com.csj.domain.dto.MyComment;
 import com.csj.mapper.ArticleMapper;
 import com.csj.mapper.ListArticleMapper;
 import com.csj.service.IArticleService;
@@ -108,6 +110,66 @@ public class ArticleService implements IArticleService {
     @Override
     public List<Article> getHotList() {
         return mapper.findHotList();
+    }
+
+    /**
+     * 查询评论列表
+     * @param aid
+     */
+    @Override
+    public PageInfo<MyComment> getCommentList(int aid,int uid) {
+        PageHelper.startPage(1,5);
+        List<MyComment> commentList = mapper.findCommentById(aid);
+        //查询当前用户喜欢列表
+        List<CommentLike> commentIsLike = mapper.findCommentIsLike(uid);
+        for (CommentLike commentLike : commentIsLike) {
+            int cid = commentLike.getCid();
+            for (MyComment comment : commentList) {
+                if(comment.getCid()==cid){
+                    comment.setIsLike(true);
+                }
+            }
+        }
+
+        PageInfo<MyComment> pageInfo = new PageInfo<>(commentList);
+        return pageInfo;
+    }
+
+    /**
+     * 添加评论
+     * @param comment
+     */
+    @Override
+    public void saveComment(MyComment comment) {
+        mapper.insertComment(comment);
+    }
+
+    /**
+     * 喜欢评论,添加映射
+     * @param commentLike
+     * @return
+     */
+    @Override
+    public Integer likeComment(CommentLike commentLike) {
+        return mapper.insertCommentLike(commentLike);
+    }
+
+    /**
+     * 评论喜欢数+1
+     * @param cid
+     */
+    @Override
+    public void addCommentLike(Integer cid) {
+        mapper.updateCommentLike(cid);
+    }
+
+    /**
+     * 文章评论数+1
+     * @param aid
+     */
+    @Override
+    public void addCommentCount(Integer aid) {
+        mapper.updateCommentCount(aid);
     }
 
 }

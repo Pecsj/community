@@ -31,6 +31,6 @@ thymeleaf:
 
 #page分页配置
 page:
-  pageCount: 5
+  pageCount: 8
 
 

@@ -1,7 +1,9 @@
 package com.csj.service;
 
 import com.csj.domain.Article;
+import com.csj.domain.CommentLike;
 import com.csj.domain.dto.ListArticle;
+import com.csj.domain.dto.MyComment;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -29,4 +31,13 @@ public interface IArticleService {
 
     List<Article> getHotList();
 
+    PageInfo<MyComment> getCommentList(int aid,int uid);
+
+    void saveComment(MyComment comment);
+
+    Integer likeComment(CommentLike commentLike);
+
+    void addCommentLike(Integer cid);
+
+    void addCommentCount(Integer aid);
 }

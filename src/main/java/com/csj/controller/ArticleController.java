@@ -1,9 +1,12 @@
 package com.csj.controller;
 
 import com.csj.domain.Article;
+import com.csj.domain.CommentLike;
 import com.csj.domain.User;
+import com.csj.domain.dto.MyComment;
 import com.csj.service.IArticleService;
 import com.csj.service.IUserService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 文章详情控制器
@@ -41,6 +45,11 @@ public class ArticleController {
         mv.addObject("isLike",islike);
         mv.addObject("user",user);
         mv.addObject("article",article);
+
+        //查询评论详情
+        PageInfo<MyComment> commentList = articleService.getCommentList(aid,loginUser.getId());
+
+        mv.addObject("commentList",commentList);
         mv.setViewName("lookArticle");
         return mv;
     }
@@ -64,6 +73,34 @@ public class ArticleController {
         mv.addObject("article",article);
         mv.setViewName("editArticle");
         return mv;
+    }
+
+    @RequestMapping("/saveComment")
+    public String saveComment(String aid,String contain,HttpServletRequest request){
+        //添加评论
+        MyComment comment = new MyComment();
+        comment.setAid(Integer.parseInt(aid));
+        User user = (User) request.getSession().getAttribute("user");
+        comment.setUid(user.getId());
+        comment.setContain(contain);
+        articleService.saveComment(comment);
+        //文章评论数+1
+        articleService.addCommentCount(comment.getAid());
+        return "redirect:lookArticle?aid="+aid;
+    }
+
+    @RequestMapping("/doCommentLike")
+    @ResponseBody
+    public String doCommentLike(CommentLike commentLike,Integer aid){
+        //喜欢评论
+        Integer rows = articleService.likeComment(commentLike);
+        if (rows==null||rows<=0){
+            return "false";
+        }else {
+            //评论喜欢数+1
+            articleService.addCommentLike(commentLike.getCid());
+            return "true";
+        }
     }
 
 }

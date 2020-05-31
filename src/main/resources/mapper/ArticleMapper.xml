@@ -49,4 +49,28 @@
     <select id="findHotList" resultMap="articleMap">
         SELECT * FROM article ORDER BY view_count DESC LIMIT 5
     </select>
+
+    <select id="findCommentById" parameterType="Integer" resultType="com.csj.domain.dto.MyComment">
+        SELECT t.aid,t.cid,t.uid,t.contain,t.likeCount,DATE_FORMAT(t.commentTime, '%Y-%m-%d') as commentTime,u.name,u.avatar_url as avatarUrl FROM COMMENT t LEFT JOIN USER u ON t.uid = u.id WHERE t.aid = #{aid}
+    </select>
+
+    <select id="findCommentIsLike" parameterType="Integer" resultType="com.csj.domain.CommentLike">
+        SELECT * FROM like_comment WHERE uid = #{id}
+    </select>
+
+    <insert id="insertComment" parameterType="com.csj.domain.dto.MyComment">
+        INSERT INTO COMMENT(aid,uid,contain,likeCount,commentTime) VALUES(#{aid},#{uid},#{contain},0,SYSDATE())
+    </insert>
+
+    <insert id="insertCommentLike" parameterType="com.csj.domain.CommentLike">
+        insert into like_comment(cid,uid) values(#{cid},#{uid})
+    </insert>
+
+    <update id="updateCommentLike" parameterType="Integer">
+        update comment set likeCount = likeCount + 1 where cid = #{cid}
+    </update>
+
+    <update id="updateCommentCount" parameterType="Integer">
+        update article set comment_count = comment_count +1 where id = #{aid}
+    </update>
 </mapper>

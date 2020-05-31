@@ -6,7 +6,8 @@ import java.util.List;
  * 存储省市疫情信息的实体类
  */
 public class Province {
-    private String provinceName;//省市名
+    private Integer locationId;//编号
+    private String provinceShortName;//省短名
     private Integer currentConfirmedCount;//现存确诊
     private Integer confirmedCount;//累计确诊
     private Integer suspectedCount;//疑似
@@ -14,12 +15,20 @@ public class Province {
     private Integer deadCount;//死亡数
     private List<City> cities;//城市<城市名称,城市实体类>
 
-    public String getProvinceName() {
-        return provinceName;
+    public Integer getLocationId() {
+        return locationId;
     }
 
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
+    public String getProvinceShortName() {
+        return provinceShortName;
+    }
+
+    public void setProvinceShortName(String provinceShortName) {
+        this.provinceShortName = provinceShortName;
+    }
+
+    public void setLocationId(Integer locationId) {
+        this.locationId = locationId;
     }
 
     public Integer getCurrentConfirmedCount() {
@@ -73,7 +82,8 @@ public class Province {
     @Override
     public String toString() {
         return "Province{" +
-                "provinceName='" + provinceName + '\'' +
+                "locationId=" + locationId +
+                ", provinceShortName='" + provinceShortName + '\'' +
                 ", currentConfirmedCount=" + currentConfirmedCount +
                 ", confirmedCount=" + confirmedCount +
                 ", suspectedCount=" + suspectedCount +

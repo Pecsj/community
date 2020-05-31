@@ -1,6 +1,8 @@
 package com.csj.mapper;
 
 import com.csj.domain.Article;
+import com.csj.domain.CommentLike;
+import com.csj.domain.dto.MyComment;
 
 import java.util.List;
 
@@ -67,4 +69,43 @@ public interface ArticleMapper {
      * @return
      */
     List<Article> findHotList();
+
+    /**
+     * 获取评论信息
+     * @param aid
+     * @return
+     */
+    List<MyComment> findCommentById(int aid);
+
+    /**
+     * 获取当前用户喜欢的评论列表
+     * @param id
+     * @return
+     */
+    List<CommentLike> findCommentIsLike(Integer id);
+
+    /**
+     * 添加评论
+     * @param comment
+     */
+    void insertComment(MyComment comment);
+
+    /**
+     * 添加喜欢评论
+     * @param commentLike
+     * @return
+     */
+    Integer insertCommentLike(CommentLike commentLike);
+
+    /**
+     * 评论喜欢数+1
+     * @param cid
+     */
+    void updateCommentLike(Integer cid);
+
+    /**
+     * 文章评论数+1
+     * @param aid
+     */
+    void updateCommentCount(Integer aid);
 }

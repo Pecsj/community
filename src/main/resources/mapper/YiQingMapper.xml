@@ -40,4 +40,17 @@
     <select id="findSortCountries" resultType="com.csj.domain.Country">
         SELECT * FROM country WHERE confirmedCountRank IS NOT NULL ORDER BY confirmedCountRank LIMIT 5
     </select>
+
+    <insert id="insertProvince" parameterType="com.csj.domain.Province">
+        INSERT INTO china(locationId,provinceShortName,currentConfirmedCount,confirmedCount,suspectedCount,curedCount,deadCount) VALUES(#{locationId},#{provinceShortName},#{currentConfirmedCount},#{confirmedCount},#{suspectedCount},#{curedCount},#{deadCount})
+    </insert>
+
+    <update id="updateProvince" parameterType="com.csj.domain.Province">
+        UPDATE china SET provinceShortName=#{provinceShortName},currentConfirmedCount=#{currentConfirmedCount},confirmedCount=#{confirmedCount},
+         suspectedCount=#{suspectedCount},curedCount=#{curedCount},deadCount=#{deadCount} where locationId=#{locationId}
+    </update>
+
+    <select id="findProvinces" resultType="com.csj.domain.Province">
+        SELECT * FROM china
+    </select>
 </mapper>
