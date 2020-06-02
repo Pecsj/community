@@ -51,7 +51,10 @@
 						</a>
 					</li>
 					<li th:if="${pageInfo.pageNum != 1}">
-						<a th:href="'index?pageNumber='+${pageInfo.prePage}" aria-label="Previous">
+						<a th:if="${search}!='yes'" th:href="'index?pageNumber='+${pageInfo.prePage}" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+						<a th:if="${search}=='yes'" th:href="'searchArticle?title='+${title}+'&pageNumber='+${pageInfo.prePage}" aria-label="Previous">
 							<span aria-hidden="true">&laquo;</span>
 						</a>
 					</li>
@@ -59,12 +62,16 @@
 <!--					遍历标签-->
 					<li th:each="nav : ${pageInfo.navigatepageNums}" th:classappend="${pageInfo.pageNum == nav} ? 'active' : ''">
 						<!--当前页面是所在页面-->
-						<a class="active" th:href="'index?pageNumber='+${nav}" th:text="${nav}"></a>
+						<a th:if="${search}!='yes'" class="active" th:href="'index?pageNumber='+${nav}" th:text="${nav}"></a>
+						<a th:if="${search}=='yes'" class="active" th:href="'searchArticle?title='+${title}+'&pageNumber='+${nav}" th:text="${nav}"></a>
 					</li>
 
 <!--					不是最后一页-->
 					<li th:if="${pageInfo.pageNum != pageInfo.pages}">
-						<a th:href="'index?pageNumber='+${pageInfo.nextPage}" aria-label="Next">
+						<a th:if="${search}!='yes'" th:href="'index?pageNumber='+${pageInfo.nextPage}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+						<a th:if="${search}=='yes'" th:href="'searchArticle?title='+${title}+'&pageNumber='+${pageInfo.nextPage}" aria-label="Next">
 							<span aria-hidden="true">&raquo;</span>
 						</a>
 					</li>

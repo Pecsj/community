@@ -25,4 +25,6 @@ public interface YiQingMapper {
     void updateProvince(Province province);
 
     List<Province> findProvinces();
+
+    List<Country> findCountries();
 }

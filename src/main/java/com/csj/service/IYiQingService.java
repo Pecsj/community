@@ -24,4 +24,6 @@ public interface IYiQingService {
     boolean updateProvinces(Map<String, Province> provinces);
 
     List<Province> findProvinces();
+
+    List<Country> findCountries();
 }

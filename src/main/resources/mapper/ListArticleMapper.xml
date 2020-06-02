@@ -28,4 +28,12 @@
          ON a.`creator`=b.`id`
     </select>
 
+    <select id="findSearchArticle" parameterType="String" resultMap="listArticleMap">
+        SELECT a.*,b.`name`,b.`avatar_url`
+         FROM article a
+         LEFT JOIN USER b
+         ON a.`creator`=b.`id` where a.title like #{title}
+    </select>
+
+
 </mapper>

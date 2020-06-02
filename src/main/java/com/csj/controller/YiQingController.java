@@ -75,4 +75,18 @@ public class YiQingController {
         return data;
     }
 
+    @RequestMapping("/getWorldInfo")
+    @ResponseBody
+    public List getWorldInfo(){
+        List<Country> countries = service.findCountries();
+        List<Map<String,Integer>> data = new LinkedList<>();
+        for (Country country : countries) {
+            Map map = new HashMap();
+            map.put("name",country.getProvinceName());
+            map.put("value",country.getConfirmedCount());
+            data.add(map);
+        }
+        return data;
+    }
+
 }

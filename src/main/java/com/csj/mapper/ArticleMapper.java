@@ -108,4 +108,11 @@ public interface ArticleMapper {
      * @param aid
      */
     void updateCommentCount(Integer aid);
+
+    /**
+     * 根据文章名称查询
+     * @param title
+     * @return
+     */
+    List<Article> findByTitle(String title);
 }

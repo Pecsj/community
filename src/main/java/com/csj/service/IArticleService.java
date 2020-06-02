@@ -17,7 +17,9 @@ public interface IArticleService {
 
     PageInfo<ListArticle> findListArticle(int pageNumber,int count);
 
-    PageInfo<Article> getMyArticlePage(int id,int pageNumber,int count);
+    PageInfo<ListArticle> findSearchArticle(int pageNumber, int count,String title);
+
+    PageInfo<Article> getMyArticlePage(int id, int pageNumber, int count);
 
     Article getArticle(int aid);
 
@@ -40,4 +42,6 @@ public interface IArticleService {
     void addCommentLike(Integer cid);
 
     void addCommentCount(Integer aid);
+
+    List<Article> searchArticle(String title);
 }

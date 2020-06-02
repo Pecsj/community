@@ -132,5 +132,14 @@ public class YiQingService implements IYiQingService {
         return mapper.findProvinces();
     }
 
+    /**
+     * 获取各国家疫情信息
+     * @return
+     */
+    @Override
+    public List<Country> findCountries() {
+        return mapper.findCountries();
+    }
+
 
 }

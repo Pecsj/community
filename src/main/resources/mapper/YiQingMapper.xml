@@ -53,4 +53,8 @@
     <select id="findProvinces" resultType="com.csj.domain.Province">
         SELECT * FROM china
     </select>
+
+    <select id="findCountries" resultType="com.csj.domain.Country">
+        SELECT * FROM country
+    </select>
 </mapper>

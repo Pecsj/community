@@ -90,7 +90,7 @@ public class AuthController {
         System.out.println("用户存入session"+user);
         Cookie cookie = new Cookie("token", user.getToken());
         //测试使用值5分钟失效
-        cookie.setMaxAge(60*5);
+        cookie.setMaxAge(60*60*24*7);
         response.addCookie(cookie);
         return modelAndView;
     }

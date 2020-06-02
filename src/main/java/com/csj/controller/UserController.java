@@ -39,7 +39,8 @@ public class UserController {
      */
     @PostMapping("/register")
     public String register(User user,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
         //调用百度AI添加用户
         System.out.println(user.getFace());
         //判断百度云人脸库是否已经存在该用户
@@ -49,9 +50,13 @@ public class UserController {
                 //存入数据库
                 user.setToken(UUID.randomUUID().toString());
                 userService.insertUser(user);
-                //存入session
+                //存入session和百度人脸库
                 request.getSession().setAttribute("user",user);
                 System.out.println("用户存入session");
+                Cookie token = new Cookie("token",user.getToken());
+                //测试值五分钟
+                token.setMaxAge(60*60*24*7);
+                response.addCookie(token);
                 baidu.addFace(user.getId(),user.getName(), user.getFace());
                 return "redirect:index";
             }else{
@@ -126,7 +131,7 @@ public class UserController {
         request.getSession().setAttribute("user",user);
         Cookie token = new Cookie("token",user.getToken());
         //测试值五分钟
-        token.setMaxAge(60*5);
+        token.setMaxAge(60*60*24*7);
         response.addCookie(token);
         response.getWriter().write("ok");
         return;

@@ -61,13 +61,18 @@ public class Baidu implements IBaidu {
         String userId="";
         //从返回的json数据中获取id
         if(res.has("result")){
-            JSONObject result = res.getJSONObject("result");
-            System.out.println(result);
-            if(result.has("user_list")){
-                JSONArray userList = result.getJSONArray("user_list");
-                JSONObject user = userList.getJSONObject(0);
-                score = user.getInt("score");
-                userId = user.getString("user_id");
+            try{
+                JSONObject result = res.getJSONObject("result");
+                System.out.println(result);
+                if(result.has("user_list")){
+                    JSONArray userList = result.getJSONArray("user_list");
+                    JSONObject user = userList.getJSONObject(0);
+                    score = user.getInt("score");
+                    userId = user.getString("user_id");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return -1;
             }
         }
         //当匹配值达到90分时成功

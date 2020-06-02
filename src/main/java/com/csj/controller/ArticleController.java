@@ -3,11 +3,13 @@ package com.csj.controller;
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
 import com.csj.domain.User;
+import com.csj.domain.dto.ListArticle;
 import com.csj.domain.dto.MyComment;
 import com.csj.service.IArticleService;
 import com.csj.service.IUserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +28,8 @@ public class ArticleController {
     private IArticleService articleService;
     @Autowired
     private IUserService userService;
+    @Value("${page.pageCount}")
+    private Integer pageCount;
 
     @RequestMapping("/lookArticle")
     @ResponseBody
@@ -89,6 +93,12 @@ public class ArticleController {
         return "redirect:lookArticle?aid="+aid;
     }
 
+    /**
+     * 添加评论喜欢
+     * @param commentLike
+     * @param aid
+     * @return
+     */
     @RequestMapping("/doCommentLike")
     @ResponseBody
     public String doCommentLike(CommentLike commentLike,Integer aid){
@@ -101,6 +111,25 @@ public class ArticleController {
             articleService.addCommentLike(commentLike.getCid());
             return "true";
         }
+    }
+
+    /**
+     * 跳转到主页
+     * @return
+     */
+    @RequestMapping("/searchArticle")
+    public ModelAndView searchArticle(String title,Integer pageNumber){
+        ModelAndView mv = new ModelAndView();
+        //获取文章列表
+        if(pageNumber==null){
+            pageNumber=1;
+        }
+        PageInfo<ListArticle> pageInfo = articleService.findSearchArticle(pageNumber, pageCount,title);
+        mv.addObject("search","yes");
+        mv.addObject("title",title);
+        mv.addObject("pageInfo",pageInfo);
+        mv.setViewName("index");
+        return mv;
     }
 
 }

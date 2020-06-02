@@ -11,4 +11,10 @@ public interface ListArticleMapper {
      */
     List<ListArticle> findAll();
 
+    /**
+     * 根据标题查询文章
+     * @return
+     */
+    List<ListArticle> findSearchArticle(String title);
+
 }

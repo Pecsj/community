@@ -50,6 +50,24 @@ public class ArticleService implements IArticleService {
     }
 
     /**
+     * 搜索文章，一对一关联用户(使用pageHelper分页)
+     * @return
+     */
+    @Override
+    public PageInfo<ListArticle> findSearchArticle(int pageNumber, int count, String title) {
+        title = "%"+title+"%";
+        PageHelper.startPage(pageNumber,count);
+        List<ListArticle> listArticles = listMapper.findSearchArticle(title);
+        for (ListArticle listArticle : listArticles) {
+            if (listArticle.getDescription().length()>30){
+                listArticle.setDescription(listArticle.getDescription().substring(0,29)+"......");//截取文章内容前十个字
+            }
+        }
+        PageInfo<ListArticle> pageInfo = new PageInfo<>(listArticles);
+        return pageInfo;
+    }
+
+    /**
      * 根据用户返回文章页面
      * @param id
      * @param pageNumber
@@ -170,6 +188,17 @@ public class ArticleService implements IArticleService {
     @Override
     public void addCommentCount(Integer aid) {
         mapper.updateCommentCount(aid);
+    }
+
+    /**
+     * 搜索帖子
+     * @param title
+     * @return
+     */
+    @Override
+    public List<Article> searchArticle(String title) {
+        title = "%"+title+"%";
+        return mapper.findByTitle(title);
     }
 
 }

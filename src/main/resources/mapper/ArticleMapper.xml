@@ -73,4 +73,8 @@
     <update id="updateCommentCount" parameterType="Integer">
         update article set comment_count = comment_count +1 where id = #{aid}
     </update>
+
+    <select id="findByTitle" parameterType="String" resultType="com.csj.domain.Article">
+        select * from article where title like #{title}
+    </select>
 </mapper>
