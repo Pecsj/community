@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>主页</title>
+    <title>我的回复</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/my.css">
@@ -16,12 +16,86 @@
 <div th:if="${session.message}!=null">
     <p th:text="${session.message}"></p>
 </div>
+
 <!--		主题内容-->
-<p>我的回帖界面</p>
+<div class="container-fluid main">
+    <div class="row">
+        <!--            栏目头-->
+        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+            <h2>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <span>我的回复</span>
+            </h2>
+            <hr>
+            <!--			回复列表-->
+            <div th:if="${myComment != null}" class="media articleDiv" th:each="item : ${myComment.list}">
+<!--                文章信息-->
+                <div>
+                    <a th:href="@{/lookArticle?aid=}+${item.aid}">
+                        <img th:src="${item.avatarUrl !='' && item.avatarUrl !=null} ? ${item.avatarUrl}:'img/default.jpg'" alt="头像" class="media-object img-rounded listimg" style="float: left">
+                        <div th:text="${item.uName}" class="label label-default" style="margin-left: 15px"></div>
+                    </a>
+                    <div th:text="${item.description}" style="font-size: 18px;margin-left: 90px"></div>
+                </div>
+<!--                评论列表-->
+                <div style="clear: both">
+                    <div th:each="comment:${item.commentList}" class="commentList">
+                        <span th:text="${comment.contain}"></span>
+                        <span th:text="${comment.commentTime}"></span>
+                    </div>
+                </div>
+            </div>
+            <!--			分页-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!--					当前页面是第一页-->
+                    <li th:if="${myComment.pageNum == 1}" class="disabled">
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${myComment.pageNum != 1}">
+                        <a th:href="'myresponse?pageNumber='+${myComment.prePage}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!--					遍历标签-->
+                    <li th:each="nav : ${myComment.navigatepageNums}" th:classappend="${myComment.pageNum == nav} ? 'active' : ''">
+                        <!--当前页面是所在页面-->
+                        <a class="active" th:href="'myresponse?pageNumber='+${nav}" th:text="${nav}"></a>
+                    </li>
+
+                    <!--					不是最后一页-->
+                    <li th:if="${myComment.pageNum != myComment.pages}">
+                        <a th:href="'myresponse?pageNumber='+${myComment.nextPage}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${myComment.pageNum == myComment.pages}" class="disabled" aria-label="Next">
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <!--            功能栏-->
+        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 col-md-offset-1" style="margin-top: 50px">
+            <a th:href="@{/myinfo}" class="list-group-item">
+                个人信息
+            </a>
+            <a th:href="@{/myresponse}" class="list-group-item active">我的回复</a>
+            <a th:href="@{/myarticle}" class="list-group-item">我的发帖</a>
+        </div>
+    </div>
+</div>
 
 <!--			底部-版权信息-->
 
-
+<div th:insert="bottom :: page"></div>
 
 
 

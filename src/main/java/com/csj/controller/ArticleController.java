@@ -3,8 +3,8 @@ package com.csj.controller;
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
 import com.csj.domain.User;
+import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.ListArticle;
-import com.csj.domain.dto.MyComment;
 import com.csj.service.IArticleService;
 import com.csj.service.IUserService;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 文章详情控制器
@@ -51,7 +50,7 @@ public class ArticleController {
         mv.addObject("article",article);
 
         //查询评论详情
-        PageInfo<MyComment> commentList = articleService.getCommentList(aid,loginUser.getId());
+        PageInfo<ArticleComment> commentList = articleService.getCommentList(aid,loginUser.getId());
 
         mv.addObject("commentList",commentList);
         mv.setViewName("lookArticle");
@@ -82,7 +81,7 @@ public class ArticleController {
     @RequestMapping("/saveComment")
     public String saveComment(String aid,String contain,HttpServletRequest request){
         //添加评论
-        MyComment comment = new MyComment();
+        ArticleComment comment = new ArticleComment();
         comment.setAid(Integer.parseInt(aid));
         User user = (User) request.getSession().getAttribute("user");
         comment.setUid(user.getId());
@@ -131,5 +130,21 @@ public class ArticleController {
         mv.setViewName("index");
         return mv;
     }
+
+    /**
+     * 删除文章
+     * @return
+     */
+    @RequestMapping("/deleteArticle")
+    public String deleteArticle(String aid){
+        boolean flag = articleService.deleteArticle(aid);
+        if(flag){
+            return "redirect:index";
+        }else{
+            return "redirect:index?error=删除失败";
+        }
+    }
+
+
 
 }

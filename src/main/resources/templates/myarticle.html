@@ -80,14 +80,19 @@
         </div>
 
         <!--            功能栏-->
-        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" style="margin-top: 50px" th:insert="rightList :: list">
+        <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 col-md-offset-1" style="margin-top: 50px">
+            <a th:href="@{/myinfo}" class="list-group-item">
+                个人信息
+            </a>
+            <a th:href="@{/myresponse}" class="list-group-item">我的回复</a>
+            <a th:href="@{/myarticle}" class="list-group-item active">我的发帖</a>
         </div>
     </div>
 </div>
 
 <!--			底部-版权信息-->
 
-
+<div th:insert="bottom :: page"></div>
 
 
 

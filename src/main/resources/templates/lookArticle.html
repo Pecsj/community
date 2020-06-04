@@ -80,6 +80,9 @@
                     <a th:href="@{/editArticle?aid=}+${article.id}" th:if="${isEditor==true}">
                         <button type="button" class="btn btn-default btn-sm">修改</button>
                     </a>
+                    <a th:href="@{/deleteArticle?aid=}+${article.id}" th:if="${isEditor==true}">
+                        <button type="button" class="btn btn-default btn-sm">删除</button>
+                    </a>
                     <span style="float: right;cursor: pointer">
                         喜欢
                         <img th:if="${isLike==true}" src="img/like.png" alt="喜欢" width="25px" height="25px">
@@ -157,7 +160,7 @@
 </div>
 
 <!--			底部-版权信息-->
-
+<div th:insert="bottom :: page"></div>
 
 <!--模态框-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

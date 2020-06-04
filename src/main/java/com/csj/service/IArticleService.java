@@ -3,6 +3,7 @@ package com.csj.service;
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
 import com.csj.domain.dto.ListArticle;
+import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.MyComment;
 import com.github.pagehelper.PageInfo;
 
@@ -33,9 +34,9 @@ public interface IArticleService {
 
     List<Article> getHotList();
 
-    PageInfo<MyComment> getCommentList(int aid,int uid);
+    PageInfo<ArticleComment> getCommentList(int aid, int uid);
 
-    void saveComment(MyComment comment);
+    void saveComment(ArticleComment comment);
 
     Integer likeComment(CommentLike commentLike);
 
@@ -44,4 +45,8 @@ public interface IArticleService {
     void addCommentCount(Integer aid);
 
     List<Article> searchArticle(String title);
+
+    boolean deleteArticle(String aid);
+
+    PageInfo<MyComment> getMyComment(int pageNumber,int pageCount,int userId);
 }

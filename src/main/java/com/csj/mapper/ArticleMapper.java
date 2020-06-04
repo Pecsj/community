@@ -2,7 +2,9 @@ package com.csj.mapper;
 
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
+import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.MyComment;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -75,7 +77,7 @@ public interface ArticleMapper {
      * @param aid
      * @return
      */
-    List<MyComment> findCommentById(int aid);
+    List<ArticleComment> findCommentById(int aid);
 
     /**
      * 获取当前用户喜欢的评论列表
@@ -88,7 +90,7 @@ public interface ArticleMapper {
      * 添加评论
      * @param comment
      */
-    void insertComment(MyComment comment);
+    void insertComment(ArticleComment comment);
 
     /**
      * 添加喜欢评论
@@ -115,4 +117,47 @@ public interface ArticleMapper {
      * @return
      */
     List<Article> findByTitle(String title);
+
+    /**
+     * 删除文章
+     * @param aid
+     */
+    @Transactional
+    void deleteArticle(String aid);
+
+    /**
+     * 获取某文章下的评论
+     * @return
+     * @param aid
+     */
+    @Transactional
+    List<Integer> getCid(String aid);
+
+    /**
+     * 删除评论
+     * @param aid
+     */
+    @Transactional
+    void deleteComment(String aid);
+
+    /**
+     * 删除文章喜欢数
+     * @param aid
+     */
+    @Transactional
+    void deleteLikeArticle(String aid);
+
+    /**
+     * 删除文章评论喜欢数
+     * @param cids
+     */
+    @Transactional
+    void deleteLikeComment(List<Integer> cids);
+
+    /**
+     * 查询我的回复列表
+     * @param userId
+     * @return
+     */
+    List<MyComment> findMyComment(int userId);
 }

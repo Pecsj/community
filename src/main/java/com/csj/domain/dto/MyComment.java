@@ -1,25 +1,26 @@
 package com.csj.domain.dto;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * 文章评论
+ * 我的回复
  */
 public class MyComment {
-    private int cid;//评论id
-    private int aid;//文章id
-    private int uid;//评论人id
-    private String name;//评论人姓名
-    private String avatarUrl;//评论人头像
-    private String contain;//评论内容
-    private int likeCount;//喜欢数
-    private String commentTime;//评论时间
-    private boolean isLike;//当前用户是否喜欢
 
-    public int getCid() {
-        return cid;
+    private int aid;//文章id
+    private String title;//文章标题
+    private String description;//文章描述
+    private String uName;//作者名称
+    private String avatarUrl;//作者头像
+    private List<ArticleComment> commentList;//回复列表
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setCid(int cid) {
-        this.cid = cid;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getAid() {
@@ -30,20 +31,20 @@ public class MyComment {
         this.aid = aid;
     }
 
-    public int getUid() {
-        return uid;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getuName() {
+        return uName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setuName(String uName) {
+        this.uName = uName;
     }
 
     public String getAvatarUrl() {
@@ -54,50 +55,23 @@ public class MyComment {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getContain() {
-        return contain;
+    public List<ArticleComment> getCommentList() {
+        return commentList;
     }
 
-    public void setContain(String contain) {
-        this.contain = contain;
-    }
-
-    public int getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public String getCommentTime() {
-        return commentTime;
-    }
-
-    public void setCommentTime(String commentTime) {
-        this.commentTime = commentTime;
-    }
-
-    public boolean getIsLike() {
-        return isLike;
-    }
-
-    public void setIsLike(boolean like) {
-        isLike = like;
+    public void setCommentList(List<ArticleComment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override
     public String toString() {
         return "MyComment{" +
-                "cid=" + cid +
-                ", aid=" + aid +
-                ", uid=" + uid +
-                ", name='" + name + '\'' +
+                "aid=" + aid +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", uName='" + uName + '\'' +
                 ", avatarUrl='" + avatarUrl + '\'' +
-                ", contain='" + contain + '\'' +
-                ", likeCount=" + likeCount +
-                ", commentTime='" + commentTime + '\'' +
-                ", isLike=" + isLike +
+                ", commentList=" + commentList +
                 '}';
     }
 }

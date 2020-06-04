@@ -34,3 +34,17 @@ body{
     border-bottom-left-radius: 10px 20px;
 }
 
+.commentList{
+    width: 100%;
+    min-height:50px;
+    _height:50px;
+    border: 1px solid #e1e1e8;
+    background-color: #f7f7f9;
+    border-radius: 2px;
+    padding-top: 10px;
+}
+
+.commentList :nth-child(2){
+    float: right;
+    padding-right: 10px;
+}

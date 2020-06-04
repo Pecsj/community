@@ -50,7 +50,7 @@
         SELECT * FROM article ORDER BY view_count DESC LIMIT 5
     </select>
 
-    <select id="findCommentById" parameterType="Integer" resultType="com.csj.domain.dto.MyComment">
+    <select id="findCommentById" parameterType="Integer" resultType="com.csj.domain.dto.ArticleComment">
         SELECT t.aid,t.cid,t.uid,t.contain,t.likeCount,DATE_FORMAT(t.commentTime, '%Y-%m-%d') as commentTime,u.name,u.avatar_url as avatarUrl FROM COMMENT t LEFT JOIN USER u ON t.uid = u.id WHERE t.aid = #{aid}
     </select>
 
@@ -58,7 +58,7 @@
         SELECT * FROM like_comment WHERE uid = #{id}
     </select>
 
-    <insert id="insertComment" parameterType="com.csj.domain.dto.MyComment">
+    <insert id="insertComment" parameterType="com.csj.domain.dto.ArticleComment">
         INSERT INTO COMMENT(aid,uid,contain,likeCount,commentTime) VALUES(#{aid},#{uid},#{contain},0,SYSDATE())
     </insert>
 
@@ -76,5 +76,52 @@
 
     <select id="findByTitle" parameterType="String" resultType="com.csj.domain.Article">
         select * from article where title like #{title}
+    </select>
+
+    <delete id="deleteArticle" parameterType="String">
+        delete from article where id = #{aid}
+    </delete>
+
+    <select id="getCid" parameterType="String" resultType="Integer">
+        select cid from comment where aid = #{aid}
+    </select>
+
+    <delete id="deleteComment" parameterType="String">
+        delete from comment where aid = #{aid}
+    </delete>
+    
+    <delete id="deleteLikeArticle" parameterType="String">
+        delete from like_article where aid = #{aid}
+    </delete>
+
+    <delete id="deleteLikeComment" parameterType="list">
+        delete from like_comment
+        <where>
+          cid in
+            <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+            #{item}
+            </foreach>
+        </where>
+    </delete>
+
+
+    <resultMap type="com.csj.domain.dto.MyComment" id="commentMap">
+        <id column="id" property="aid"></id>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="name" property="uName"/>
+        <result column="avatar_url" property="avatarUrl"/>
+        <!-- collection 是用于建立一对多中集合属性的对应关系    ofType 用于指定集合元素的数据类型    -->
+        <collection property="commentList" ofType="com.csj.domain.dto.ArticleComment">
+            <result column="contain" property="contain"/>
+            <result column="commentTime" property="commentTime"/>
+        </collection>  </resultMap>
+
+    <select id="findMyComment" parameterType="int" resultMap="commentMap">
+        SELECT t.id,t.title,t.description,u.name,u.avatar_url,k.contain,k.commentTime
+         FROM article t
+         LEFT JOIN COMMENT k ON t.id = k.aid
+         LEFT JOIN USER u ON u.id = t.creator
+         WHERE t.id IN (SELECT DISTINCT aid FROM COMMENT WHERE uid = 1)
     </select>
 </mapper>

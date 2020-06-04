@@ -22,10 +22,7 @@ public class TestController {
     @RequestMapping("/test")
     @ResponseBody
     public String test1() throws Exception{
-        YiQingUtil util = new YiQingUtil();
-        Map<String, Province> provinces = util.getProvinces();
-        service.updateProvinces(provinces);
-        return "1";
+        throw new Exception("error");
     }
 
 }

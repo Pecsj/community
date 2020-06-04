@@ -2,6 +2,7 @@ package com.csj.service.impl;
 
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
+import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.ListArticle;
 import com.csj.domain.dto.MyComment;
 import com.csj.mapper.ArticleMapper;
@@ -11,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -135,21 +137,21 @@ public class ArticleService implements IArticleService {
      * @param aid
      */
     @Override
-    public PageInfo<MyComment> getCommentList(int aid,int uid) {
-        PageHelper.startPage(1,5);
-        List<MyComment> commentList = mapper.findCommentById(aid);
+    public PageInfo<ArticleComment> getCommentList(int aid, int uid) {
+        PageHelper.startPage(1,20);
+        List<ArticleComment> commentList = mapper.findCommentById(aid);
         //查询当前用户喜欢列表
         List<CommentLike> commentIsLike = mapper.findCommentIsLike(uid);
         for (CommentLike commentLike : commentIsLike) {
             int cid = commentLike.getCid();
-            for (MyComment comment : commentList) {
+            for (ArticleComment comment : commentList) {
                 if(comment.getCid()==cid){
                     comment.setIsLike(true);
                 }
             }
         }
 
-        PageInfo<MyComment> pageInfo = new PageInfo<>(commentList);
+        PageInfo<ArticleComment> pageInfo = new PageInfo<>(commentList);
         return pageInfo;
     }
 
@@ -158,7 +160,7 @@ public class ArticleService implements IArticleService {
      * @param comment
      */
     @Override
-    public void saveComment(MyComment comment) {
+    public void saveComment(ArticleComment comment) {
         mapper.insertComment(comment);
     }
 
@@ -200,5 +202,57 @@ public class ArticleService implements IArticleService {
         title = "%"+title+"%";
         return mapper.findByTitle(title);
     }
+
+    /**
+     * 删除帖子
+     * @param aid
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean deleteArticle(String aid) {
+        try{
+            //删除文章
+            mapper.deleteArticle(aid);
+
+            //删除喜欢文章
+            //找出文章下的评论id并删除喜欢评论
+            List<Integer> cidList = mapper.getCid(aid);
+            mapper.deleteLikeComment(cidList);
+
+            //删除评论
+            mapper.deleteComment(aid);
+
+            //删除喜欢文章
+            mapper.deleteLikeArticle(aid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获得我的回复分页列表
+     * @param pageNumber
+     * @param pageCount
+     * @param userId
+     * @return
+     */
+    @Override
+    public PageInfo<MyComment> getMyComment(int pageNumber, int pageCount, int userId) {
+        PageHelper.startPage(pageNumber,pageCount);
+        List<MyComment> commentList = mapper.findMyComment(userId);
+        //长度截取
+        for (MyComment comment : commentList) {
+            int length = comment.getDescription().length();
+            if(length>30){
+                comment.setDescription(comment.getDescription().substring(0,30)+"......");
+            }
+        }
+        PageInfo<MyComment> pageInfo = new PageInfo<>(commentList);
+        return pageInfo;
+    }
+
 
 }

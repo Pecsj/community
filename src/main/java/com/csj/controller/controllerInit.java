@@ -46,7 +46,8 @@ public class controllerInit {
 
     @RequestMapping({"/","/index"})
     public String init(HttpServletRequest request,
-                             Integer pageNumber
+                             Integer pageNumber,
+                       String error
                              ){
         //去cookie中查找用户是否持久化登录
         Cookie[] cookies = request.getCookies();
@@ -74,6 +75,12 @@ public class controllerInit {
         }
         PageInfo<ListArticle> pageInfo = articleService.findListArticle(pageNumber, pageCount);
         request.setAttribute("pageInfo",pageInfo);
+
+        //其他页面错误信息
+        if(error!=null&&error.length()>0){
+            System.out.println(error);
+            request.setAttribute("error",error);
+        }
         return "index";
     }
 

@@ -94,11 +94,7 @@
 
 <!--			底部-版权信息-->
 
-
-
-
-
-
+<div th:insert="bottom :: page"></div>
 
 
 
@@ -128,6 +124,7 @@
 	$(function(){
 		var msg = [[${error}]];
 		if(msg!=""&&msg!=null){
+			$("#myModalLabel").val(msg);
 			$('#myModal').modal('show');
 		}
 	})
