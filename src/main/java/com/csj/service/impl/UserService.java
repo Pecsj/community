@@ -111,5 +111,10 @@ public class UserService implements IUserService {
         return userMapper.insertLike(uid,aid);
     }
 
+    @Override
+    public int insertFace(User user) {
+        return userMapper.insertFace(user);
+    }
+
 
 }

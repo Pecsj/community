@@ -20,4 +20,6 @@ public interface IUserService {
     void updateXxx(UpdateXxx updateXxx);
 
     Integer likeArticle(int uid, int aid);
+
+    int insertFace(User user);
 }

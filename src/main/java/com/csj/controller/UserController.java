@@ -4,6 +4,7 @@ import com.csj.domain.User;
 import com.csj.domain.dto.UpdateXxx;
 import com.csj.service.IBaidu;
 import com.csj.service.IUserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
@@ -99,7 +100,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public void login (HttpServletRequest request,
+    @ResponseBody
+    public Object login (HttpServletRequest request,
                        HttpServletResponse response,
                        String name,
                        String password) throws IOException, ServletException {
@@ -114,16 +116,14 @@ public class UserController {
             id = baidu.faceSearch(image);
             if(id<0){
                 //调用失败
-                response.getWriter().write("baiduError");
-                return;
+                return "baiduError";
             }
             user = userService.findById(id);
         }else{
             //普通登录
             user = userService.loginUser(name, password);
             if (user == null){
-                response.sendRedirect("login?error=userLogin");
-                return;
+                return "loginError";
             }
         }
         System.out.println(user);
@@ -133,8 +133,7 @@ public class UserController {
         //测试值五分钟
         token.setMaxAge(60*60*24*7);
         response.addCookie(token);
-        response.getWriter().write("ok");
-        return;
+        return "ok";
     }
 
     @GetMapping("/update")
@@ -147,4 +146,28 @@ public class UserController {
         userService.updateXxx(updateXxx);
         return "ok";
     }
+
+    /**
+     * 添加人脸
+     * @return
+     */
+    @RequestMapping("/addFace")
+    @ResponseBody
+    public Object addFace(String img,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        user.setFace(img);
+        //添加到人脸库
+        JSONObject res = baidu.addFace(user.getId(), user.getName(), img);
+        //更新数据库
+        int i = 0;
+        if("SUCCESS".equals(res.getString("error_msg"))){
+            i = userService.insertFace(user);
+        }
+
+        if(i>0){
+            return '1';
+        }else return '0';
+    }
+
+
 }

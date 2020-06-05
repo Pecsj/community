@@ -5,9 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/my.css">
+    <link rel="stylesheet" href="css/liMarquee.css">
     <link rel="stylesheet" href="css/editormd.preview.min.css">
     <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/jquery.liMarquee.js"></script>
     <script src="js/editormd.min.js"></script>
     <script src="js/lib/marked.min.js"></script>
     <script src="js/lib/prettify.min.js"></script>
@@ -37,11 +39,15 @@
 
 </head>
 <body>
+<!--隐藏域存储项目根目录-->
+<a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
+<input hidden id="uid" th:value="${session.user.id}">
+<input hidden id="aid" th:value="${article.id}">
 <!--		导航条-->
 <div th:insert="navigation :: nav"></div>
 <!--		滚动公告-->
-<div th:if="${session.message}!=null">
-    <p th:text="${session.message}"></p>
+<div class="str str_wrap notice">
+    <p id="notice" ></p>
 </div>
 <!--		主题内容-->
 <div class="container-fluid main">
@@ -110,7 +116,7 @@
                         </div>
                     </div>
 
-                    <textarea class="form-control" rows="3" name="contain">11111</textarea>
+                    <textarea class="form-control" rows="3" name="contain" placeholder="留下你的评论"></textarea>
                     <button type="submit" class="btn btn-success" style="float: right">评论</button>
                 </form>
 
@@ -184,7 +190,52 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel" aria-hidden="true">
+    <form th:action="@{/publishNotice}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="noticeModalLabel">
+                        发布通知公告
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <!--					通知内容-->
+                    <input hidden th:value="${session.user.id}" name="uid">
+                    <div class="col-sm-10">
+                        <textarea rows="3" name="contain" class="form-control" id="inputContain" placeholder="输入公告内容"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="doNotice()" class="btn btn-success" data-dismiss="modal">发布</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </form>
+</div><!-- /.modal -->
+
 <script th:inline="javascript">
+    var ctx = $("#contextPath").attr("href");
+    function publishNotice() {
+        $("#noticeModal").modal('show');
+    }
+    function doNotice() {
+        $.ajax({
+            type:"post",
+            url:ctx+"publishNotice",
+            data:$("#noticeForm").serialize(),
+            dataType:'json',
+            success:function (data) {
+                $("#notice").text(data.contain);
+            },
+            error:function () {
+                alert("发布失败");
+            }
+        });
+    }
+
     $(function () {
         var msg = [[${error}]];
         if (msg != "" && msg != null) {
@@ -193,10 +244,7 @@
     })
 </script>
 
-<!--隐藏域存储项目根目录-->
-<a hidden th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} " id="contextPath"></a>
-<input hidden id="uid" th:value="${session.user.id}">
-<input hidden id="aid" th:value="${article.id}">
+
 <script>
     // 当网页向下滑动 20px 出现"返回顶部" 按钮
     window.onscroll = function() {scrollFunction()};
@@ -276,6 +324,30 @@
             alert("你已经点过赞啦！");
         }
     }
+
+
+    $(function () {
+        $('.str').liMarquee();
+        alert(ctx);
+        //每三秒调用一次
+        setInterval(updateNotice,3000);
+    })
+
+    function updateNotice() {
+        console.log("更新公告");
+        $.ajax({
+            url:"updateNotice",
+            type:"get",
+            dataType:"json",
+            success:function (data) {
+                $("#notice").text(data.contain);
+            },
+            error:function () {
+                console.log("更新公告失败")
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

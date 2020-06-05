@@ -2,6 +2,7 @@ package com.csj.mapper;
 
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
+import com.csj.domain.Notice;
 import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.MyComment;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,4 +161,17 @@ public interface ArticleMapper {
      * @return
      */
     List<MyComment> findMyComment(int userId);
+
+    /**
+     * 添加通知公告
+     * @param notice
+     * @return
+     */
+    Integer insertNotice(Notice notice);
+
+    /**
+     * 查询最新通知公告
+     * @return
+     */
+    Notice findLastNotice();
 }

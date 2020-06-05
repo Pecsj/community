@@ -120,8 +120,19 @@
     <select id="findMyComment" parameterType="int" resultMap="commentMap">
         SELECT t.id,t.title,t.description,u.name,u.avatar_url,k.contain,k.commentTime
          FROM article t
-         LEFT JOIN COMMENT k ON t.id = k.aid
+         LEFT JOIN COMMENT k ON t.id = k.aid AND k.uid = #{uid}
          LEFT JOIN USER u ON u.id = t.creator
-         WHERE t.id IN (SELECT DISTINCT aid FROM COMMENT WHERE uid = 1)
+         WHERE t.id IN (SELECT DISTINCT aid FROM COMMENT WHERE uid = #{uid})
+    </select>
+
+    <insert id="insertNotice" parameterType="com.csj.domain.Notice">
+        <selectKey keyProperty="nid" keyColumn="nid" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into notice(uid,contain,createTime) values (#{uid},#{contain},CURRENT_TIMESTAMP)
+    </insert>
+
+    <select id="findLastNotice" resultType="com.csj.domain.Notice">
+        select * from notice order by createTime desc limit 1
     </select>
 </mapper>

@@ -65,4 +65,8 @@
         insert into like_article(uid,aid) values(#{uid},#{aid})
     </insert>
 
+    <update id="insertFace" parameterType="com.csj.domain.User">
+        update user set face = #{face} where id = #{id}
+    </update>
+
 </mapper>

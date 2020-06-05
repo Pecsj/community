@@ -69,4 +69,11 @@ public interface UserMapper {
      * @return
      */
     Integer insertLike(int uid, int aid);
+
+    /**
+     * 添加人脸
+     * @param user
+     * @return
+     */
+    int insertFace(User user);
 }

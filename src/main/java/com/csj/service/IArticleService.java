@@ -2,6 +2,7 @@ package com.csj.service;
 
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
+import com.csj.domain.Notice;
 import com.csj.domain.dto.ListArticle;
 import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.MyComment;
@@ -49,4 +50,8 @@ public interface IArticleService {
     boolean deleteArticle(String aid);
 
     PageInfo<MyComment> getMyComment(int pageNumber,int pageCount,int userId);
+
+    int addNotice(Notice notice);
+
+    Notice getLastNotice();
 }

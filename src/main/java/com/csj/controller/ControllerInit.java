@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("value")
-public class controllerInit {
+public class ControllerInit {
     @Autowired
     private IUserService userservice;
     @Autowired

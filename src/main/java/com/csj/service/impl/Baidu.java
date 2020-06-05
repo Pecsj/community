@@ -18,15 +18,12 @@ public class Baidu implements IBaidu {
     private AipFace aipFace = new AipFace(APP_ID,API_KEY,SECRET_KEY);
 
     @Override
-    public String addFace(int id,String name, String baseImg) {
-        System.out.println(APP_ID);
-        System.out.println(API_KEY);
-        System.out.println(SECRET_KEY);
+    public JSONObject addFace(int id,String name, String baseImg) {
         // 传入可选参数调用接口
         HashMap<String, String> options = new HashMap<String, String>();
         options.put("user_info", name);//用户额外信息
         options.put("quality_control", "NORMAL");//照片质量控制
-        options.put("liveness_control", "LOW");//活体检测
+        options.put("liveness_control", "NONE");//活体检测(测试关闭)
         options.put("action_type", "APPEND");//追加添加人脸
 
         //图片编码设置
@@ -38,8 +35,7 @@ public class Baidu implements IBaidu {
         // 人脸注册
         JSONObject res = aipFace.addUser(image, imageType, groupId, userId, options);
         System.out.println(res.toString(2));
-
-        return null;
+        return res;
     }
 
     @Override

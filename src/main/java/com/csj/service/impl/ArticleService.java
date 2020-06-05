@@ -2,6 +2,7 @@ package com.csj.service.impl;
 
 import com.csj.domain.Article;
 import com.csj.domain.CommentLike;
+import com.csj.domain.Notice;
 import com.csj.domain.dto.ArticleComment;
 import com.csj.domain.dto.ListArticle;
 import com.csj.domain.dto.MyComment;
@@ -252,6 +253,25 @@ public class ArticleService implements IArticleService {
         }
         PageInfo<MyComment> pageInfo = new PageInfo<>(commentList);
         return pageInfo;
+    }
+
+    /**
+     * 添加通知公告
+     * @param notice
+     * @return
+     */
+    @Override
+    public int addNotice(Notice notice) {
+        return mapper.insertNotice(notice);
+    }
+
+    /**
+     * 获取最新的通知公告
+     * @return
+     */
+    @Override
+    public Notice getLastNotice() {
+        return mapper.findLastNotice();
     }
 
 
